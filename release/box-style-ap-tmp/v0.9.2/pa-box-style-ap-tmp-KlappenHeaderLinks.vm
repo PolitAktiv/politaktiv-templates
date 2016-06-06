@@ -1,0 +1,225 @@
+##
+## Generisches BoxDesign für Asset Publisher für PolitAktiv gesamt
+##
+## PA Box Style KlappenHeaderLinks AP TMP 0.9.2
+##
+
+## Darstellungs-Optionen
+## TODO: Können die Konfigurierbar gemacht werden?
+#set ( $klappen = true )
+#set ( $defaultEingeklappt = true )
+#set ( $headerLinks = true )
+
+
+## Doku Icons plus minus etc:
+## http://nickpiesco.github.io/alloy-ui-font-awesome-cheatsheet/
+#set ( $iconPlusClass = "icon-plus-sign" )
+#set ( $iconMinusClass = "icon-minus-sign" )
+
+
+## TODO: Box-Stil zentral ablegen
+<style>
+div.paBoxStyleHeader {
+  background-color: #F4F4F4;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+}
+
+h3.paBoxStyleHeader {
+  margin-top:0px;
+}
+
+## Links in Überschriften müssen separat gefettet werden, sonst funzt es nicht
+h3.paBoxStyleHeader a.paBoxStyleHeaderLink {
+    font-weight:bold;
+}
+
+
+
+
+h3.paBoxStyleActionIcons {
+  display:inline;
+  float:right;
+  margin-top:0px;
+}
+
+div.paBoxStyleEntry {
+
+  border: 1px solid #cccccc;
+  
+  margin-bottom:10px;
+
+}
+
+div.paBoxStyleContent {
+
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+
+}
+
+
+div.paBoxStyleHeaderActionIcons {
+  float:right;
+}
+
+## links nicht unterstreichen in action icons
+div.paBoxStyleHeaderActionIcons a:hover {
+  text-decoration:none;
+}
+
+div.paBoxStyleKlappenContentSummary {
+  display: block;
+}
+div.paBoxStyleKlappenContentFull {
+  display: block;
+}
+
+
+
+</style>
+
+## JavaScript-Code zum Ein- und Ausklappen der Detailansicht (+- Buttons)
+## TODO: Zentral ablegen!
+<script language="JavaScript" type="text/javascript"><!--
+
+
+function setDetailsDisplay(trID,instanceID, visible) {
+
+  var toggleI = document.getElementById("paBoxStyleKlappenIcon_" + instanceID + "_" + trID);
+  var divLang = document.getElementById("paBoxStyleKlappenContentFull_" + instanceID + "_" + trID);
+  var divKurz = document.getElementById("paBoxStyleKlappenContentSummary_" + instanceID + "_" + trID);
+
+
+  if ( visible ) {
+        toggleI.className = "$iconMinusClass";
+        divLang.style.display = "block";
+        divKurz.style.display = "none";
+  } else {
+	toggleI.className = "$iconPlusClass";    
+        divLang.style.display = "none";
+        divKurz.style.display = "block";
+  }
+
+
+}
+
+
+function toggleDetails(trID,instanceID) {
+    
+    var divLang = document.getElementById("paBoxStyleKlappenContentFull_" + instanceID + "_" + trID);
+    setDetailsDisplay(trID, instanceID, (divLang.style.display != "block")); 
+    
+}
+
+
+// -->
+
+</script>
+
+## Double Quote Hack, weil Esacping nicht funzt
+#set ( $dq = '"')
+## Falls das Ein/ausklappen ausgeschaltet ist: Eingeklappt als Default immer überschreiben
+#if ( !$klappen ) 
+    #set ( $defaultEingeklappt = false )
+#end
+
+## Eineindeutige Kennung fuer diesen AssetPublisher holen
+##set ($instanceID = $portletDisplay.getInstanceId() )
+#set ($instanceID = $themeDisplay.getPortletDisplay().getInstanceId() )
+
+## Default CSS für Einträge eingeklappt / ausgeklappt
+#if ( $defaultEingeklappt ) 
+  #set ( $displayKurz = 'block' ) 
+  #set ( $displayLang = 'none' ) 
+  #set ( $defaultIcon = $iconPlusClass )
+#else
+  #set ( $displayKurz = 'none' ) 
+  #set ( $displayLang = 'block' ) 
+  #set ( $defaultIcon = $iconMinusClass )
+#end
+
+
+## Keine Eintraege gefunden? Dann nix machen.
+#if (!$entries.isEmpty())
+
+    #set ($entryCounter = 0)
+    
+
+    ## Über alle Einträge iterieren
+    #foreach ($curEntry in $entries)
+	#set ( $entryCounter = $entryCounter +1 )
+	
+	## Daten und Infos abholen
+	#set ( $viewURL = $assetPublisherHelper.getAssetViewURL($renderRequest, $renderResponse, $curEntry) )
+	
+	#set($renderer = $curEntry.getAssetRenderer() )
+	#set( $journalArticle = $renderer.getArticle() )
+	#set ( $contentTitle = $htmlUtil.escape($curEntry.getTitle("$locale")) )
+	#set ( $kurzfassung = $renderer.getSummary( $locale ) )
+	#set ( $langfassung = $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "") )
+	
+	## Edit Button aktivieren oder nicht?
+	#set ( $editLink = '' )
+	#if ($renderer.hasEditPermission($themeDisplay.getPermissionChecker())) 
+	  ## jetzt muss der Edit-Button und seine Funktion gebastelt werden…
+	  #set ( $redirectURL = $renderResponse.createRenderURL() )
+	  $redirectURL.setParameter("struts_action", "/asset_publisher/add_asset_redirect")
+	  $redirectURL.setWindowState("pop_up")
+	  #set ( $editPortletURL = $renderer.getURLEdit($renderRequest, $renderResponse, $windowStateFactory.getWindowState("pop_up"), $redirectURL) )
+	  #if ( $validator.isNotNull($editPortletURL) )
+	      #set ( $editTitle = $languageUtil.format($locale, "edit-x", $htmlUtil.escape($renderer.getTitle($locale))) )
+	      #set ( $safeURL = $htmlUtil.escapeURL($editPortletURL.toString()) )
+	      ##set ( $editURL = "javascript:Liferay.Util.openWindow({dialog: {width: 960}, id:'$renderResponse.getNamespace()editAsset', title: '$editTitle', uri:'$safeURL'});" )
+	      #set ( $editURL = "javascript:Liferay.Util.openWindow({id:'$renderResponse.getNamespace()editAsset', title: '$editTitle', uri:'$safeURL'});" )
+	      #set ( $editLink = "<a href=${dq}${editURL}${dq}<i class=${dq}icon-edit-sign${dq}></i></a>" )
+	  #end
+	#end
+	
+	## Klappen-Button aktivieren oder nicht?
+	#if ( $klappen )
+	    #set ( $klappLink = "<a href=${dq}#${dq} onClick=${dq}toggleDetails('$entryCounter','$instanceID'); return false;${dq}><i class=${dq}$defaultIcon${dq}  id=${dq}paBoxStyleKlappenIcon_${instanceID}_$entryCounter${dq}></i></a>" )
+	#else
+	    #set ( $klappLink = "" )
+	#end
+	
+	## Action-Icons (Edit, Klappen) bauen oder nicht bauen?
+	#set ($actionIcons ='')
+	#if ( $klappLink != '' || $editLink != '') 
+	    #set ($actionIcons ="<h3 class=${dq}paBoxStyleActionIcons${dq}>${klappLink} ${editLink}</a></h3>")
+	#end
+	
+
+	#if ( $headerLinks ) 
+	  #set ( $contentTitleDisplay = "<h3 class=${dq}paBoxStyleHeader${dq}><a href=${dq}$viewURL${dq} class=${dq}paBoxStyleHeaderLink${dq}>$contentTitle</h3></a>" )
+	#else
+	  #set ( $contentTitleDisplay = "<h3 class=${dq}paBoxStyleHeader${dq}>$contentTitle</h3>" )
+	#end
+	
+	## Content zusammenbauen
+	<div class="paBoxStyleEntry">
+	  <div class="paBoxStyleHeader">
+	    $actionIcons
+	    $contentTitleDisplay
+	  </div>
+	
+	  <div class="paBoxStyleContent" id="">
+	    <div id="paBoxStyleKlappenContentFull_${instanceID}_$entryCounter" class="paBoxStyleKlappenContentFull" style="display: $displayLang;">
+	      $langfassung
+	    </div>
+	    <div id="paBoxStyleKlappenContentSummary_${instanceID}_$entryCounter"  class="paBoxStyleKlappenContentSummary"  style="display: $displayKurz;">
+	      <p>$kurzfassung</p>
+	      
+	      <p><a href="#" onClick="toggleDetails('$entryCounter','$instanceID'); return false;">Eintrag komplett anzeigen</a>
+	      </p>
+	    </div>
+	  </div>
+	</div>  
+	
+
+  ## Schleife über alle Einträge
+  #end 
+
+#end

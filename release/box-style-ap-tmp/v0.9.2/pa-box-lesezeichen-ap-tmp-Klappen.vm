@@ -1,0 +1,331 @@
+##
+## Lesezeichen im Asset Publisher im PolitAktiv Box Style darstellen
+## Erste Fassung: April 2016, Niels Ott
+##
+## PA Box Lesezeichen Klappen AP TMP 0.9.2
+##
+##
+
+## Header-Art für Überschriften
+#set ($headerType = "4" )
+
+## Target für Links (Auskommentieren für Default=
+#set ($linkTarget = "_blank")
+
+## Ein/Ausklappen von Eingträgen?
+#set ($klappen = true)
+
+## Standard-Einstellung für ein/ausklappen
+#set ( $defaultEingeklappt = true )
+
+## Lesezeichen haben keine Kurzfassung von LifeRay. Verwende daher die ersten X Zeichen wie folgt:
+#set ($kurzfassungLaenge = 200)
+
+
+## Hintergrund für Header-Box (auskommentieren: kein Hintergrundbild)
+#set ($headerBackgroundURL = "/documents/10165/379055/newspaper-seamless.png/9988e257-124a-4958-83d4-a43731581794")
+
+
+##set ($bookmarkIcon = "icon-bookmark" )
+## Icon vor dem Bookmark:
+#set ($bookmarkIcon = "icon-external-link" )
+
+## Metadaten-Icons:
+#set ($modifiedTimeIcon = "icon-calendar" )
+#set ($publishedTimeIcon = "icon-calendar" )
+#set ($createdTimeIcon = "icon-calendar" )
+#set ($expiresTimeIcon = "icon-calendar-empty" )
+#set ($viewCountIcon = "icon-eye-open" )
+#set ($tagIcon = "icon-tag" )
+#set ($categoryIcon = "icon-folder-close" )
+#set ($authorIcon = "icon-user" )
+#set ($authorPriority = "icon-long-arrow-up" )
+
+## Klapp-Icons
+#set ( $iconPlusClass = "icon-plus-sign" )
+#set ( $iconMinusClass = "icon-minus-sign" )
+
+
+## Generische Icon-Klasse/Erweiterung für wichtige Formatierungen:
+#set ($genericIconClass = "PaStyleIconExtension")
+
+<style>
+
+div.paLesezeichenHeader {
+  #if ( $headerBackgroundURL )
+    background: url('$headerBackgroundURL');
+  #end  
+  background-color: #F4F4F4;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+}
+
+h3.paLesezeichenHeader {
+  margin-top:0px;
+}
+
+div.paLesezeichenEntry {
+
+  border: 1px solid #cccccc;
+  margin-bottom:10px;
+
+}
+
+i.$genericIconClass:before {
+  display:inline !important;
+  padding-right:.25rem;
+}
+
+span.paLesezeichenMetadatenItem {
+  padding-right:.4rem;
+
+}
+
+div.paLesezeichenAnzeige {
+  margin-bottom:20px;
+  
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+  
+}
+
+h${headerType}.paLesezeichenAnzeigeTitel {
+  margin-top:0px;
+}
+
+h${headerType}.paLesezeichenActionIcons {
+  display:inline;
+  float:right;
+  margin-top:0px;
+}
+
+hr.paLesezeichenAnzeige {
+  width:75%;
+  padding:0px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:10px;
+  margin-top:0px;
+}
+
+</style>
+
+## JavaScript-Code zum Ein- und Ausklappen der Detailansicht (+- Buttons)
+## TODO: Zentral ablegen!
+<script language="JavaScript" type="text/javascript"><!--
+
+
+function setDetailsDisplay(trID,instanceID, visible) {
+
+  var toggleI = document.getElementById("paBoxStyleKlappenIcon_" + instanceID + "_" + trID);
+  var divLang = document.getElementById("paBoxStyleKlappenContentFull_" + instanceID + "_" + trID);
+  var divKurz = document.getElementById("paBoxStyleKlappenContentSummary_" + instanceID + "_" + trID);
+
+
+  if ( visible ) {
+        toggleI.className = "$iconMinusClass";
+        divLang.style.display = "block";
+        divKurz.style.display = "none";
+  } else {
+	toggleI.className = "$iconPlusClass";    
+        divLang.style.display = "none";
+        divKurz.style.display = "block";
+  }
+
+
+}
+
+
+function toggleDetails(trID,instanceID) {
+    
+    var divLang = document.getElementById("paBoxStyleKlappenContentFull_" + instanceID + "_" + trID);
+    setDetailsDisplay(trID, instanceID, (divLang.style.display != "block")); 
+    
+}
+
+
+// -->
+
+</script>
+
+## Hack, da Escaping nicht funzt
+#set ( $dq = '"')
+
+
+## Eineindeutige Kennung fuer diesen AssetPublisher holen
+#set ($instanceID = $themeDisplay.getPortletDisplay().getInstanceId() )
+
+
+<div class="paLesezeichenEntry">
+  <div class="paLesezeichenHeader">
+  <h3 class="paLesezeichenHeader">$themeDisplay.getPortletDisplay().getTitle()</h3>
+ </div>
+
+
+## Keine Eintraege gefunden? Dann nix machen.
+#if (!$entries.isEmpty())
+
+ #set ($entryCounter = 0)
+    
+
+  ## Über alle Einträge iterieren
+  #foreach ($curEntry in $entries)
+  
+    #set ( $entryCounter = $entryCounter +1 )
+	
+	#set($renderer = $curEntry.getAssetRenderer() )
+	
+	## Kurzfassungen gibt es nicht für Lesezeichen, selber bauen:
+	## - Anbschneiden nach Konfiguration
+	## - Letztes Leerzeichen als Trenner suchen
+	## - Falls nicht kürzer als 1/2 der konfigurierten Länge, dort abschneiden, sonst belassen (mitten im Wort abgesäbelt)
+	#if ( $curEntry.description.length() > $kurzfassungLaenge) 
+	    #set ($kurzfassung = $curEntry.description.substring(0, $kurzfassungLaenge ))
+	    #set ($lastBlankIndex = $kurzfassung.lastIndexOf(' '))
+	    #if ($lastBlankIndex > $kurzfassungLaenge / 2 )
+	        #set ($kurzfassung = $kurzfassung.substring(0,$lastBlankIndex))
+	    #end
+	    #set ($kurzfassung = "${kurzfassung}…")
+	#else
+	    #set ( $kurzfassung = $curEntry.description )	
+	#end
+
+	## Klapp-Automatismus: Falls die Kurzfassung der Langfassung entspricht, wird das Klappen für diesen 
+	## Eintrag deaktiviert, egal auf was das Klappen konfiguriert ist
+	#if ($kurzfassung.equals($curEntry.description))
+	    #set ($eintragKlappen = false)
+	#elseif ( $klappen )
+	    #set ($eintragKlappen = true)
+	#else
+	    #set ($eintragKlappen = false)
+	#end
+	
+	## Falls das Klappen ausgeschaltet ist: Einträge sind immer ausgeklappt, egal was eingestellt ist.
+	#set ( $eintragEingeklappt = $defaultEingeklappt )
+    #if ( !$eintragKlappen ) 
+        #set ( $eintragEingeklappt = false )
+    #end
+	
+
+    ## CSS-Klassen für das Klappen für diesen Eintrag vorkonfigurieren
+    #if ( $eintragEingeklappt ) 
+        #set ( $displayKurz = 'block' ) 
+        #set ( $displayLang = 'none' ) 
+        #set ( $defaultIcon = $iconPlusClass )
+    #else
+        #set ( $displayKurz = 'none' ) 
+        #set ( $displayLang = 'block' ) 
+        #set ( $defaultIcon = $iconMinusClass )
+    #end	
+	
+	
+	## Klappen-Button aktivieren oder nicht?
+	#if ( $eintragKlappen )
+	    #set ( $klappLink = "<a href=${dq}#${dq} onClick=${dq}toggleDetails('$entryCounter','$instanceID'); return false;${dq}><i class=${dq}$defaultIcon${dq}  id=${dq}paBoxStyleKlappenIcon_${instanceID}_$entryCounter${dq}></i></a>" )
+	#else
+	    #set ( $klappLink = '' )
+	#end
+	
+	
+	## Edit Button aktivieren oder nicht?
+	#set ( $editLink = '' )
+	#if ($renderer.hasEditPermission($themeDisplay.getPermissionChecker())) 
+	  ## jetzt muss der Edit-Button und seine Funktion gebastelt werden…
+	  #set ( $redirectURL = $renderResponse.createRenderURL() )
+	  $redirectURL.setParameter("struts_action", "/asset_publisher/add_asset_redirect")
+	  $redirectURL.setWindowState("pop_up")
+	  #set ( $editPortletURL = $renderer.getURLEdit($renderRequest, $renderResponse, $windowStateFactory.getWindowState("pop_up"), $redirectURL) )
+	  #if ( $validator.isNotNull($editPortletURL) )
+	      #set ( $editTitle = $languageUtil.format($locale, "edit-x", $htmlUtil.escape($renderer.getTitle($locale))) )
+	      #set ( $safeURL = $htmlUtil.escapeURL($editPortletURL.toString()) )
+	      #set ( $editURL = "javascript:Liferay.Util.openWindow({id:'$renderResponse.getNamespace()editAsset', title: '$editTitle', uri:'$safeURL'});" )
+	      #set ( $editLink = "<a href=${dq}${editURL}${dq}<i class=${dq}icon-edit-sign${dq}></i></a>" )
+	  #end
+	#end
+	
+	## Action-Icons (Edit, Klappen) bauen oder nicht bauen?
+	#set ($actionIcons ='')
+	#if ( $klappLink != '' || $editLink != '') 
+	    #set ($actionIcons ="<h${headerType} class=${dq}paLesezeichenActionIcons${dq}>${klappLink} ${editLink}</a></h${headerType}>")
+	#end
+		
+	
+	## URL für Link
+	#set ( $bookmarkOpenURL = "/c/bookmarks/open_entry?entryId=$curEntry.classPK" )
+	
+	## Target
+	#set ( $target = "")
+	#if ($linkTarget)
+		#set ( $target = " target=${dq}${linkTarget}${dq}")
+	#end
+	
+	## Metadaten: Die ganzen Datümer einsammeln
+	#set ($modified = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.modifiedDate, $locale)) )	
+	#set ($created = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.createDate, $locale)) )	
+	#set ($expires = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.expirationDate, $locale)) )	
+	#set ($published = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.publishDate, $locale)) )	
+
+	## Hier werden die Basis-Daten angezeigt
+	<div class="paLesezeichenAnzeige">
+	  <div class="paLesezeichenAnzeigeTitel">
+	    $actionIcons
+	    <a href="$bookmarkOpenURL"$target><h${headerType} class="paLesezeichenAnzeigeTitel"><i class="$bookmarkIcon $genericIconClass"></i> $htmlUtil.escape($curEntry.title)</h${headerType}></a>
+	  </div>
+	  <div id="paBoxStyleKlappenContentFull_${instanceID}_$entryCounter" class="paLesezeichenAnzeigeBeschreibungKomplett" style="display: $displayLang;">
+	    <p>$htmlUtil.escape($curEntry.description)</p>
+       </div>
+	    <div id="paBoxStyleKlappenContentSummary_${instanceID}_$entryCounter"  class="paLesezeichenAnzeigeBeschreibungKurzfassung"  style="display: $displayKurz;">
+	      <p>$htmlUtil.escape($kurzfassung)</p>
+	     <p><a href="#" onClick="toggleDetails('$entryCounter','$instanceID'); return false;">Eintrag komplett anzeigen</a>
+	    </div>
+	  
+	  ## Und hier geht es durch alle Metadaten-Felder durch, die bei Bedarf (angeschaltet in Config) eingefügt werden
+	  #if (! $metadataFields.equals("") )
+	    <div class="paLesezeichenMetadaten">
+	    <hr class="paLesezeichenAnzeige" />
+	    #foreach ( $curField in $metadataFields.split(",") )
+              #if ( $curField.equals("view-count") && ($curEntry.viewCount == 1 ) )
+                <span class="paLesezeichenMetadatenItem"><i class="$viewCountIcon $genericIconClass"></i>$curEntry.viewCount&nbsp;Aufruf</span>
+              #elseif ( $curField.equals("view-count") )
+                <span class="paLesezeichenMetadatenItem"><i class="$viewCountIcon $genericIconClass"></i>$curEntry.viewCount&nbsp;Aufrufe</span>
+              #elseif ( $curField.equals("modified-date") && $modified  )
+                <span class="paLesezeichenMetadatenItem"><i class="$modifiedTimeIcon $genericIconClass"></i>$modified</span>
+              #elseif ( $curField.equals("create-date") && $created )
+                <span class="paLesezeichenMetadatenItem"><i class="$createdTimeIcon $genericIconClass"></i>$created</span>
+              #elseif ( $curField.equals("expiration-date") && $expires )  
+                <span class="paLesezeichenMetadatenItem"><i class="$expiresTimeIcon $genericIconClass"></i>$expires</span>
+              #elseif ( $curField.equals("publish-date") && $published )  
+                <span class="paLesezeichenMetadatenItem"><i class="$publishedTimeIcon $genericIconClass"></i>$pubished</span>
+              #elseif ( $curField.equals("author") )  
+                <span class="paLesezeichenMetadatenItem"><i class="$authorIcon $genericIconClass"></i>Autor:&nbsp;$htmlUtil.escape($curEntry.userName)</span>
+              #elseif ( $curField.equals("priority") )  
+                <span class="paLesezeichenMetadatenItem"><i class="$authorPriority $genericIconClass"></i>Priorität:&nbsp;$curEntry.priority</span>
+              #elseif ( $curField.equals("tags") )  
+                #set ($tags = $curEntry.getTags() )
+                #if ( ! $tags.isEmpty() ) 
+		  #foreach ( $curTag in $tags )
+		    <span class="paLesezeichenMetadatenItem"><i class="$tagIcon $genericIconClass"></i>$htmlUtil.escape($curTag.name )</span>
+		  #end
+		#end
+              #elseif ( $curField.equals("categories") )  
+                #set ($categories = $curEntry.getCategories() )
+                #if ( ! $categories.isEmpty() ) 
+		  #foreach ( $curCat in $categories )
+		    <span class="paLesezeichenMetadatenItem"><i class="$categoryIcon $genericIconClass"></i>$htmlUtil.escape($curCat.name )</span>
+		  #end
+		#end
+              #end  
+	    #end
+	    </div>
+	  #end  
+	
+	</div>
+
+  ## Schleife über alle Einträge
+  #end 
+
+#end
+
+</div>

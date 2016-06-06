@@ -1,0 +1,108 @@
+##
+## News-Spalte als Box-Style Layout für Asset Publisher für PolitAktiv gesamt
+##
+## PA Box News AP TMP 0.9.1
+##
+
+<style>
+div.PAnewsBoxHeader {
+  background-color: #F4F4F4;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+}
+
+h3.PAnewsBoxHeader {
+  margin-top:0px;
+}
+
+div.PAnewsBoxEntry {
+
+  border: 1px solid #cccccc;
+  
+  margin-bottom:10px;
+
+}
+
+div.PAnewsBoxFullContent {
+
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+
+}
+
+hr.PAnewsBox {
+  width:75%;
+  padding:0px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:10px;
+  margin-top:0px;
+
+
+}
+
+
+</style>
+
+#set ( $dq = '"')
+
+## Eineindeutige Kennung fuer diesen AssetPublisher holen
+##set ($instanceID = $themeDisplay.getPortletDisplay().getInstanceId() )
+
+
+<div class="PAnewsBoxEntry">
+  <div class="PAnewsBoxHeader">
+  <h3 class="PAnewsBoxHeader">$htmlUtil.escape($themeDisplay.getPortletDisplay().getTitle()) </h3>
+ </div>
+
+
+## Keine Eintraege gefunden? Dann nix machen.
+#if (!$entries.isEmpty())
+
+    #set ($entryCounter = 0)
+
+    ## Über alle Einträge iterieren
+    #foreach ($curEntry in $entries)
+	#set ( $entryCounter = $entryCounter +1 )
+	
+	## Daten und Infos abholen
+	#set ( $viewURL = $assetPublisherHelper.getAssetViewURL($renderRequest, $renderResponse, $curEntry) )
+	#set($renderer = $curEntry.getAssetRenderer() )
+	#set( $journalArticle = $renderer.getArticle() )
+	
+	## Edit Button aktivieren oder nicht?
+	#set ( $editLink = '' )
+	#if ($renderer.hasEditPermission($themeDisplay.getPermissionChecker())) 
+	  ## jetzt muss der Edit-Button und seine Funktion gebastelt werden…
+	  #set ( $redirectURL = $renderResponse.createRenderURL() )
+	  $redirectURL.setParameter("struts_action", "/asset_publisher/add_asset_redirect")
+	  $redirectURL.setWindowState("pop_up")
+	  #set ( $editPortletURL = $renderer.getURLEdit($renderRequest, $renderResponse, $windowStateFactory.getWindowState("pop_up"), $redirectURL) )
+	  #if ( $validator.isNotNull($editPortletURL) )
+	      #set ( $editTitle = $languageUtil.format($locale, "edit-x", $htmlUtil.escape($renderer.getTitle($locale))) )
+	      #set ( $safeURL = $htmlUtil.escapeURL($editPortletURL.toString()) )
+	      #set ( $editURL = "javascript:Liferay.Util.openWindow({id:'$renderResponse.getNamespace()editAsset', title: '$editTitle', uri:'$safeURL'});" )
+	      #set ( $editLink = "<a href=${dq}${editURL}${dq}<i class=${dq}icon-edit-sign${dq}></i></a>" )
+	  #end
+	#end	
+	
+	
+	  <div class="PAnewsBoxFullContent">
+	  $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "")
+	  $editLink	  
+	  </div>
+	  ## Falls nicht letzter Eintrag: Trenner einblenden
+	  #if ( $entryCounter < $entries.size() )
+	    <hr class="PAnewsBox" />
+	  #end
+	  
+	  
+
+  ## Schleife über alle Einträge
+  #end 
+
+#end
+
+</div>
