@@ -1,0 +1,314 @@
+##
+## Quiz-Darstellung und Funktionalität via JavaScript
+## Version 0.9
+##
+
+## FIXME: das wird nicht funktionieren, wenn man ein Quiz 2x auf einer Seite hat
+## Problem: Es ist irgendwie unmöglich, eine Portlet-ID zu kriegen.
+#set ($articleID = $reserved-article-id.getData() )
+#set ($instanceID =  "quiz${articleID}"  )
+
+## Einstellungen:
+## CSS Klassen für Feedback-Icons: 
+#set ( $iconCorrect = "icon-ok PA_Quiz_IconColor_Correct" )
+#set ( $iconWrong = "icon-remove PA_Quiz_IconColor_Wrong" )
+#set ( $iconEmpty = "icon-check-empty PA_Quiz_IconColor_Empty" )
+#set ( $iconMissing = "icon-arrow-right PA_Quiz_IconColor_Missing" )
+
+## Rückmeldung zusätzlich mit diesen CSS-Klassen darstellen:
+#set ( $rueckmeldungClass = "alert alert-info" )
+
+<style>
+
+i.PA_Quiz_IconColor_Empty {
+  
+  color: white;
+  
+}
+i.PA_Quiz_IconColor_Correct {
+  color: green;
+  
+}
+i.PA_Quiz_IconColor_Wrong {
+  color: red;
+}
+i.PA_Quiz_IconColor_Missing {
+  color: red;
+}
+
+span.PA_Quiz_Formular_Icon {
+  display:inline-block;
+  width:3em;
+  text-align:center;
+}
+
+form.PA_Quiz_Formular label  {
+  font-size:100%;
+}
+
+form.PA_Quiz_Formular input  {
+  font-size:100%;
+}
+
+
+</style>
+
+<script language="JavaScript" type="text/javascript"><!--
+
+## Datensammlung vorbereiten für Auswertung (wird bei Iteration über Fragen und Antworten gefüllt)
+var AntwortenElementID_korrekt = new Array();
+AntwortenElementID_korrekt['auswahlKorrekt'] = new Object();
+AntwortenElementID_korrekt['checkerID']= new Object();
+AntwortenElementID_korrekt['frageID']= new Object();
+var FragenFehlerCounter = new Array();
+var MeldungenMinKorrekt = new Array();
+
+function auswerten(auswertenID,auswertungID) {
+
+ 
+  ## Über alle Antort-Elemente loopen
+  for ( var curElementID in AntwortenElementID_korrekt['auswahlKorrekt'] ) {
+  
+    ##alert('Element ID:' + curElementID);
+  
+    var auswahlKorrekt = AntwortenElementID_korrekt['auswahlKorrekt'][curElementID];
+    var checkerID = AntwortenElementID_korrekt['checkerID'][curElementID];
+    var frageID = AntwortenElementID_korrekt['frageID'][curElementID];
+    
+    var formularElement = document.getElementById(curElementID);
+    
+    ## Formular-Element ausschalten, benutzer kann nichts mehr ändern
+    formularElement.disabled = true;
+    
+    ## Bestimmen, ob die Antwort richtig angekreuzt wurde
+    var antwortRichtig = (formularElement.checked == auswahlKorrekt);
+
+    updateChecker(checkerID, antwortRichtig, formularElement.checked );
+    
+    ## Fehleranzahl für die Frage aufsummieren
+    if ( !antwortRichtig ) {
+      FragenFehlerCounter[frageID]++;
+    }
+    
+  
+  } ## Ende Loop über alle Antworten
+  
+  ## Über Fragen loopen und auf jede Frage reagieren
+  var fehler = 0;
+  var anzahlFragen = 0;
+  for ( var curFrageID in FragenFehlerCounter ) {
+    anzahlFragen++;
+    if (FragenFehlerCounter[curFrageID] > 0 ) {
+      fehler++;
+    }
+  }
+  var anzahlFragenKorrekt = anzahlFragen - fehler;
+  
+  ##window.alert("Debug:\n\nAnzahl falsch beantworter Fragen: " + fehler +
+  ##  "\nAnzahl korrekt beantworter Fragen: " + anzahlFragenKorrekt );
+  
+  ## Auswerten-Button etc. verstecken, Auswertungsfeld generell anschalten
+  auswertenToggleDisplay(auswertenID,auswertungID);
+  
+  ## Ergebnis anzeigen in Abhängigkeit von der anzahl korrekt beantworteter Fragen
+  rueckmeldungAnzeigen(anzahlFragenKorrekt);
+
+}
+
+## Alle Rückmeldungen abklappern und die anzeigen, deren Mindest-Zahl korrekt beantworteter Fragen zutrifft
+function rueckmeldungAnzeigen(anzahlFragenKorrekt) {
+
+  var trefferElementID = "";
+
+  ## Alle Rückmeldungen durchgehen und die mit der höchsten passenden Mindest-Antwort finden
+  ## (Highest-Watermark-Algorithmus)
+  for (var meldungElementID in MeldungenMinKorrekt) {
+    var minKorrekt = MeldungenMinKorrekt[meldungElementID];
+    if (anzahlFragenKorrekt >= minKorrekt) {
+      trefferElementID = meldungElementID;
+    }
+  }
+
+  ##window.alert(trefferElementID);
+  
+  
+  ## anzeige für dieses Element aktivieren
+  var meldungDIV = document.getElementById(trefferElementID);
+  meldungDIV.style.display = "block";
+
+
+}
+
+
+## Display umschalten generell: auswertungsbutton raus, Auswertungsanzeige rein
+function auswertenToggleDisplay(auswertenID,auswertungID) {
+
+  var auswertenDIV = document.getElementById(auswertenID);
+  var auswertungDIV = document.getElementById(auswertungID);
+
+  auswertenDIV.style.display = "none";
+  auswertungDIV.style.display = "block";
+
+}
+
+
+
+## Checker-Anzeige updaten
+function updateChecker(checkerID, korrekt, angekreuzt) {
+
+  var checkerI = document.getElementById(checkerID);
+  
+  if ( korrekt && angekreuzt ) {
+      checkerI.className = '$iconCorrect';
+  }
+  
+  if ( !korrekt && angekreuzt ) {
+      checkerI.className = '$iconWrong';
+  }
+
+  if ( ! korrekt && ! angekreuzt ) {
+    checkerI.className = '$iconMissing';
+  }
+  
+
+}
+
+
+function antwortRegistrieren(elementID, checkerID, frageID, auswahlKorrekt) {
+  
+  AntwortenElementID_korrekt['auswahlKorrekt'][elementID] = auswahlKorrekt;
+  AntwortenElementID_korrekt['checkerID'][elementID] = checkerID;
+  AntwortenElementID_korrekt['frageID'][elementID] = frageID;
+  
+  FragenFehlerCounter[frageID] = 0;
+  
+  ## Sicherheitshalber elemente anschalten und resetten, wegen Reload-Problemen
+  var formularElement = document.getElementById(elementID);
+  formularElement.disabled = false;
+  formularElement.checked = false;
+  
+}
+
+function meldungRegistrieren(elementID, anzahlMinKorrekt) {
+
+  MeldungenMinKorrekt[elementID] = anzahlMinKorrekt;
+
+}
+  
+
+// -->
+</script>
+
+
+
+
+<div class="PA_Quiz_Erklaerung">
+    $Erklaerung.getData()
+</div>
+
+<div class="PA_Quiz_Fragen_Alle">
+## Schleife über Fragen
+#set ($fragenCounter = 0)
+#if (!$Frage.getSiblings().isEmpty())
+	#foreach ($cur_Frage in $Frage.getSiblings())
+        #set ($frageID  = "${instanceID}_${fragenCounter}")
+
+	    <div class="PA_Quiz_Frage_Komplett">
+	    
+	    ## Frage anzeigen
+	    <div class="PA_Quiz_Frage_Text">
+	        $cur_Frage.getData()
+	    </div>
+	    
+	        <div class="PA_Quiz_Antworten_Alle">
+	        ## Schleife über Antworten
+	        #if ( ! $cur_Frage.Antwort.getSiblings().isEmpty()) 
+	            ## Erste Schleife: Anzahl korrekte einfangen für Single- vs Multiple-Choice
+	            #set ($anzahlKorrekt = 0 )
+		    #foreach ($cur_Antwort in $cur_Frage.Antwort.getSiblings() )
+	                    #if ($getterUtil.getBoolean($cur_Antwort.AntwortRichtig.getData()))
+	                        #set ($anzahlKorrekt = $anzahlKorrekt+1 )
+	                    #end     
+	            #end
+	            ## Zweite Schleife: In Abhängigkeit von Single-/Multiple-Choice Formular designen
+	            ## Wenn nur eine Antwort richtig: Radioboxen, AUSSER es ist angegeben, dass mehrere richtig sein können
+	            ##! $getterUtil.getBoolean($cur_Frage.EineAntwortRichtig)
+                #if ( $anzahlKorrekt  == 1 &&  $getterUtil.getBoolean($cur_Frage.EineAntwortRichtig.getData())  ) 
+                    #set ($selectType = "radio")
+                #else
+                    #set ($selectType = "checkbox")
+                #end
+	            
+	            <form class="PA_Quiz_Formular">
+	                <fieldset>
+	                #set ($antwortCounter = 0)
+	                #foreach ($cur_Antwort in $cur_Frage.Antwort.getSiblings() )
+			    #set ($antwortIstRichtig = $getterUtil.getBoolean($cur_Antwort.AntwortRichtig.getData()) )
+	                    <label><span class="PA_Quiz_Formular_Icon"><i class="$iconEmpty" id="${frageID}_checker_${antwortCounter}"></i></span><input type="$selectType" id="${frageID}_antwort_${antwortCounter}" name="${frageID}" class="PA_Quiz_FormularElement" /> $htmlUtil.escape($cur_Antwort.getData())</label>
+	                    ## Element für die Auswertung in JavaScript-Daten registrieren:
+	                    <script language="JavaScript" type="text/javascript"><!--
+			      antwortRegistrieren('${frageID}_antwort_${antwortCounter}', '${frageID}_checker_${antwortCounter}',  '${frageID}', $antwortIstRichtig);
+	                    //-->
+	                    </script>
+	                #set ($antwortCounter = $antwortCounter + 1)
+			#end ## Ende Loop über Antworten
+    	            </fieldset>
+	            </form>
+	    
+    	    #end
+    	    </div>
+	    </div>
+	#set ($fragenCounter = $fragenCounter +1)    
+	#end ## Ende Loop über Fragen
+	
+	
+	
+#end
+</div>
+
+#set ($auswertenID  = "${instanceID}_auswerten")
+#set ($auswertungID  = "${instanceID}_auswertung")
+
+<div class="PA_Quiz_AuswertenButton" id="$auswertenID" style="display:block;">
+<form>
+  <button  class="btn  btn-primary" type="button" onclick="auswerten('$auswertenID', '$auswertungID' );">Meine Antworten jetzt auswerten</button>
+</form>  
+</div>
+
+
+
+<div class="PA_Quiz_Auswertung $rueckmeldungClass" id="$auswertungID" style="display:none;">
+  <div class="PA_Quiz_Auswertung_GenerelleMeldung">
+    $RueckmeldungGenerell.getData()
+  </div>
+  <div class="PA_Quiz_Auswertung_EinzelneMeldungen">
+      #set ( $meldungCounter = 0 )
+      #set ( $nullPunkteMeldungExistiert = false )
+      #foreach ($cur_Rueckmeldung in $RueckmeldungGenerell.RueckmeldungFuerPunkte.getSiblings() )
+	#set ($meldungID  = "${instanceID}_meldung_${meldungCounter}")
+	#set ($minAnzahlKorrekt =  $cur_Rueckmeldung.AnzahlRichtige.getData())
+	#if ( $minAnzahlKorrekt == 0 )
+	   #set ( $nullPunkteMeldungExistiert = true )
+	#end
+	<div class="PA_Quiz_Auswertung_EinzelMeldung" id="${meldungID}" style="display:none;">
+	  $cur_Rueckmeldung.getData()
+	</div>
+        <script language="JavaScript" type="text/javascript"><!--
+	  meldungRegistrieren('$meldungID', $minAnzahlKorrekt);
+        //-->
+        </script>
+	
+      #set ($meldungCounter = $meldungCounter +1)  	
+      #end ## Ende Loop über Rückmeldungen
+  </div>
+
+</div>
+
+## Los geht's bei 0 richtigen Fragen!
+#if (!$nullPunkteMeldungExistiert )
+    <span class="alert alert-error">Fehler: Es gibt keine Rückmeldung für 0 richtig beantworte Fragen!</span>
+#end
+
+
+
+##$RueckmeldungGenerell.getData()
