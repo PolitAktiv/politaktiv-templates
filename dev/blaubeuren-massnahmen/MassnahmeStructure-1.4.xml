@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Beschreibung" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-text-html" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Anmerkungen]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="LetzterStand" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Letzter Stand]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="Dorf" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Dorf]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="Arbeitskreis" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Arbeitskreis]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="Zustaendigkeit" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Zuständigkeit]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="PlakatURL" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[PlakatURL]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="boolean" indexType="keyword" name="MassnahmeAbgeschlossen" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Maßnahme abgeschlossen]]></entry>
+			<entry name="predefinedValue"><![CDATA[false]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="boolean" indexType="keyword" name="MassnahmeInArbeit" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Maßnahme ist in Arbeit]]></entry>
+			<entry name="predefinedValue"><![CDATA[false]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="boolean" indexType="keyword" name="MassnahmeInVorbereitung" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Maßnahme ist in Vorbereitung]]></entry>
+			<entry name="predefinedValue"><![CDATA[false]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="Zuordnung" readOnly="false" repeatable="false" required="false" showLabel="true" type="radio" width="">
+		<dynamic-element name="option5525" type="option" value="1-kurz">
+			<meta-data locale="de_DE">
+				<entry name="label"><![CDATA[Kurzfristige Maßnahme]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5526" type="option" value="2-mittel">
+			<meta-data locale="de_DE">
+				<entry name="label"><![CDATA[Mittelfristige Maßnahme]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5527" type="option" value="3-lang-mittel">
+			<meta-data locale="de_DE">
+				<entry name="label"><![CDATA[Lang- bis mittelfristige Maßnahme]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5528" type="option" value="4-lang">
+			<meta-data locale="de_DE">
+				<entry name="label"><![CDATA[Langfristige Maßnahme]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7616" type="option" value="5-kurz-lang">
+			<meta-data locale="de_DE">
+				<entry name="label"><![CDATA[Kurz- und langfristige Maßnahme]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7617" type="option" value="6-kurz-lang-mittel">
+			<meta-data locale="de_DE">
+				<entry name="label"><![CDATA[Kurz-, mittel- und langfristige Maßnahme]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label"><![CDATA[Zuordnung]]></entry>
+			<entry name="predefinedValue"><![CDATA[["Kurzfristige Maßnahme"]]]></entry>
+			<entry name="tip"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+</root>

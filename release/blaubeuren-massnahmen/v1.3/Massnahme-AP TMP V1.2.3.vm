@@ -1,0 +1,233 @@
+##
+## Anzeigen von Massnahmen in einer huebschen Tabellen
+## -> Liest Felder einer Structure (WebContent) ein und zeigt sie entsprechend Darstellung
+## Januar 2016, entwickelt von OtN, ScT
+##
+
+## Farbdefinitionen als Velocity-Variablen
+#set ( $green = '#00FF00' )
+#set ( $red = '#FF0000' )
+#set ( $yellow = '#FFFF00' ) 
+
+## CSS Definitionen, die von der Tabelle verwendet werden
+<style>
+table.MassnahmenTabelle  {
+    width:100%;
+    text-align:left;
+    border: 1px solid #9e9e9e;
+}
+
+table.MassnahmenTabelle tr.MassnahmeKurz {
+    border-top: 1px solid #9e9e9e;
+}
+
+table.MassnahmenTabelle td {
+    padding:1%;
+}
+
+table.MassnahmenTabelle td.zuordnung {
+    text-align:center;
+    font-weight:bold;
+}
+
+table.MassnahmenTabelle td.plus {
+    text-align:center;
+    font-weight:bold;
+}
+
+
+table.MassnahmenTabelle th {
+    padding:1%;
+    background-color: #dedede;
+}
+
+span.farbfeld {
+    float:left;
+    min-width:30px;
+    
+    margin-right:4px;
+}  
+
+span.plus {
+    float:left;
+    min-width:20px;
+    margin-right:4px;
+    background-color: #dedede;
+    border: 1px solid #9e9e9e;
+}  
+
+span.plus a {
+    font-weight:bold;
+}
+
+    
+table.MassnahmenTabelle tr.MassnahmeDetails {
+    display:none;
+}
+
+</style>
+
+## JavaScript-Code zum Ein- und Ausklappen der Detailansicht (+- Buttons)
+<script language="JavaScript" type="text/javascript"><!--
+
+function toggleMassnahmeDetails(trID,instanceID) {
+
+    var toggleTR = document.getElementById("MassnahmeDetailsZeile_" + instanceID + "_" + trID);
+    var toggleA = document.getElementById("MassnahmeDetailsPlus_" + instanceID + "_" + trID);
+    
+    
+    if (toggleTR.style.display != "table-row") {
+        toggleTR.style.display = "table-row";
+        toggleA.innerHTML = "–";
+    } else {
+         toggleTR.style.display = "none";
+         toggleA.innerHTML = "+";
+    }
+    
+}
+
+// -->
+
+</script>
+
+## Eineindeutige Kennung fuer diesen AssetPublisher holen
+#set ($instanceID = $themeDisplay.getPortletDisplay().getInstanceId() )
+
+## Keine Eintraege gefunden? Dann nix machen.
+#if (!$entries.isEmpty())
+
+  ##  Kopf der Tabelle
+  <table class="MassnahmenTabelle">
+  <tr><th>&nbsp;</th><th>&nbsp;<th>Maßnahme</th><th>Arbeitskreis</th><th>Vorschlag</th></tr>
+
+
+    #set ($entryCounter = 0)
+
+    ## Schleife ueber alle Eintraege, die der AssetPublisher nach seinen Einstellungen vorfindet
+    #foreach ($curEntry in $entries)
+	#set ( $entryCounter = $entryCounter +1 )
+	
+	## Daten und Infos abholen
+	#set ( $viewURL = $assetPublisherHelper.getAssetViewURL($renderRequest, $renderResponse, $curEntry) )
+	    
+	## XML Mist abholen, weil man anders nicht auf Structure-Felder zugreifen kann
+	#set($renderer = $curEntry.getAssetRenderer() )
+	#set($className = $renderer.getClassName() )
+
+        ## Sicherstellen, dass dies ein JournalArticle bzw. WebContent ist, sonst kracht es
+        #if( $className == "com.liferay.portlet.journal.model.JournalArticle" )
+	  #set( $journalArticle = $renderer.getArticle() )
+          #set( $document = $saxReaderUtil.read($journalArticle.getContent()) )
+          #set( $rootElement = $document.getRootElement() )
+            
+	  ## Einzelne Structure-Felder aus XML rauspuhlen via XPath
+	  ## Feld "Arbeitskreis"
+	  #set( $xPathSelector = $saxReaderUtil.createXPath("dynamic-element[@name='Arbeitskreis']") )
+          #set( $arbeitskreis = $xPathSelector.selectSingleNode($rootElement).getStringValue() )             
+
+	  ## Feld "Zuordung"
+	  #set( $xPathSelector = $saxReaderUtil.createXPath("dynamic-element[@name='Zuordnung']") )
+	  #set( $zuordnung = $xPathSelector.selectSingleNode($rootElement).getStringValue() )             
+
+	        #set( $xPathSelector = $saxReaderUtil.createXPath("dynamic-element[@name='PlakatURL']") )
+            #set( $PlakatURL = $xPathSelector.selectSingleNode($rootElement).getStringValue() )
+            #set ( $PlakatURL = $PlakatURL.trim() )
+
+	  ## Feld "Maßnahme abgeschlossen"   
+	  #set ( $abgeschlossen = 'false' )
+	  #set( $xPathSelector = $saxReaderUtil.createXPath("dynamic-element[@name='MassnahmeAbgeschlossen']") )
+	  #set( $abgeschlossen = $xPathSelector.selectSingleNode($rootElement).getStringValue() )
+	  #set ( $abgeschlossen = $abgeschlossen.trim() )
+	  #if ( ! $abgeschlossen.equals('true') )
+	    #set ( $abgeschlossen = 'false' )
+	  #end    
+	  ## Feld "Maßnahme in Arbeit"
+	  #set ( $inArbeit = 'false' )
+	  #set( $xPathSelector = $saxReaderUtil.createXPath("dynamic-element[@name='MassnahmeInArbeit']") )
+	  #set( $inArbeit = $xPathSelector.selectSingleNode($rootElement).getStringValue() )
+	  #set ( $inArbeit = $inArbeit.trim() )
+	  
+	  #if ( ! $inArbeit.equals('true') )
+	    #set ( $inArbeit = 'false' )
+	  #end    
+	  
+            
+	  ## CSS farbcodes für Zuordnung vorbreiten
+	  #set ( $cssHintergrund = '' )
+	  #set ( $zuordnungName = '')
+	  #set ( $zuordnungKey = $zuordnung.trim().toLowerCase() )
+
+	  #if ($zuordnungKey.contains('kurz'))
+	    #set ( $cssHintergrund = "background-color: ${green};" )
+	    #set ( $zuordnungName = 'Kurzfristige Maßnahme')
+	  #end    
+	  #if ($zuordnungKey.contains('mittel'))
+	    #set ( $cssHintergrund = "background-color: ${yellow};" )
+	    #set ( $zuordnungName = 'Mittelfristige Maßnahme')
+	  #end    
+	  #if ($zuordnungKey.contains('lang'))
+	    #set (  $cssHintergrund = "background-color: ${red};" )
+	    #set ( $zuordnungName = 'Langfristige Maßnahme')
+	  #end    
+	  #if ($zuordnungKey.contains('lang') && $zuordnungKey.contains('mittel') )
+	    #set ($cssHintergrund = "background: repeating-linear-gradient(to right,  ${yellow},  ${yellow} 50%,  ${red} 50%, ${red} );" )
+	    #set ( $zuordnungName = 'Mittel- bis langfristige Maßnahme')
+	  #end   
+	  #if ($zuordnungKey.contains('lang') && $zuordnungKey.contains('kurz') )
+	    #set ($cssHintergrund = "background: repeating-linear-gradient(to right,  ${green},  ${green} 50%,  ${red} 50%, ${red});" )
+	    #set ( $zuordnungName = 'Kurz- und langfristige Maßnahme')
+	  #end    
+	  #if ($zuordnungKey.contains('lang') && $zuordnungKey.contains('kurz') && $zuordnungKey.contains('mittel') )
+	    #set ($cssHintergrund = "background: repeating-linear-gradient(to right,  ${green},  ${green} 33%,  ${yellow} 33%, ${yellow} 66%,  ${red} 66%, ${red});" )
+	    #set ( $zuordnungName = 'Kurz-, lang- und langfristige Maßnahme')
+	  #end            
+
+	  ## abgeschlossen oder nicht? Darstellung generieren
+	  #set ($statusDisplay = '&nbsp;')
+	  #if ( $inArbeit.equals('true') )
+	    #set ($statusDisplay = '<i class="icon-cogs"></i>' )
+	  #end
+	  #if ( $abgeschlossen.equals('true') ) 
+	    #set ( $statusDisplay = '<i class="icon-check"></i>' )
+	  #end
+	  
+	  
+	  ## Plakat vorhanden oder nicht? Darstellung generieren
+	  #if ( $PlakatURL.equals('') ) 
+	    #set ( $plakatDisplay = '&nbsp;' )
+	  #else
+	    #set ( $dq = '"' )
+	    #set ( $safeURL = $htmlUtil.escapeHREF($PlakatURL) )
+	    #set ( $plakatDisplay = "<a href=$dq$safeURL$dq>Plakat</a>" )
+	  #end
+
+	    
+	  ## HTML Tabellen-Content /Layout
+	  ## Teil 1: Basis-Infos
+	  <tr class="MassnahmeKurz">
+	    <td class="zuordnung"><span class="farbfeld" style="$cssHintergrund">$statusDisplay</span></td>
+	    <td class="plus"><span class="plus"><a id="MassnahmeDetailsPlus_${instanceID}_$entryCounter" href="#" onClick="toggleMassnahmeDetails('$entryCounter','$instanceID'); return false;">+</a></span></td>
+		<td><a href="$viewURL">$htmlUtil.escape($curEntry.getTitle($locale))</a></td>
+		<td>$htmlUtil.escape($arbeitskreis)</td>
+		<td> $plakatDisplay</td>
+		</tr>
+	    ## Teil 2: Detail-Infos
+	    <tr class="MassnahmeDetails" id="MassnahmeDetailsZeile_${instanceID}_$entryCounter">
+	    <td>&nbsp;</td><td>&nbsp;</td>
+	    <td colspan="3"> 
+	    $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "")
+	    </td>
+	    
+	  </tr>
+
+	  #end
+	  ## Ende Pruefung auf JournalArticle, falls es keiner war wurde der Eintrag uebersprungen
+
+	#end 
+	## Ende Schleife über Einträge
+
+  ## Ende der Tabelle
+  </table>
+
+#end
+## Ende von Prüfung auf leere Einträge
