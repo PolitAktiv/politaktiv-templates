@@ -1,0 +1,43 @@
+#
+# Template, das eine Vorschau zu eiem YouTube-Video anzeigt. Wenn die Structure nicht alle Daten enthält,
+# werden diese vom Benutzer nachgefordert
+#
+# Version: Youtube Videolink TMP 0.9
+#
+
+#set ( $playButtonURL = "/documents/10165/410692/video-playbutton.png/dccd67b2-9536-4f68-b5bf-7051bf824aa7" )
+
+## Workaround: LifeRay pfuscht wenn das im AssetPublisher angezeigt
+#set ( $imgURL = $thumbnail.getData().trim() )
+#set ($imgURL = $imgURL.replace('@cdn_host@@root_path@','') )
+
+
+
+#if ( $videoID.getData().trim().equals('') )
+    <span class="alert alert-error">Fehler: Keine Video-ID angegeben</span>
+#else
+
+    #if ( $imgURL.equals('') )
+    
+        <span class="alert alert-error">TODO: <a href="http://img.youtube.com/vi/$videoID.getData().trim()/maxresdefault.jpg" target="_blank">Vorschaubild von YouTube</a>  herunterladen und in Structure hochladen!</span>
+    #else
+        #set ($youtubeURL = "https://www.youtube.com/watch?vq=hd720&amp;v=$videoID.getData().trim()" )
+        #if ( !$playlistID.getData().trim().equals('') ) 
+            #set ($youtubeURL = "$youtubeURL&amp;list=$playlistID.getData().trim()" )
+        #end
+        
+        ## OK jetzt haben wir alles zusammen, also Videolink anzeigen
+    
+	<div style="position:relative; ">
+    
+	  <a href="$youtubeURL" target="_blank">
+	  <img alt="Video bei YouTube" src="$imgURL" style="width:100% position:absolute; z-index 1;" />
+	  
+	  <img  alt="Video bei YouTube" src="$playButtonURL" style="position:absolute; z-index:2; bottom:15px; right:15px; width:25%; min-width:50px; max-width:300px; opacity:0.8; " />
+	  </a>
+        </div>
+    
+    #end
+
+
+#end
