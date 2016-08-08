@@ -1,0 +1,107 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Erklaerung" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-text-html" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Erklärung / Einführender Text]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Frage" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-text-html" width="small">
+		<dynamic-element dataType="boolean" indexType="keyword" name="EineAntwortRichtig" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Nur eine Antwort ist die richtige]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[false]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" name="Antwort" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="small">
+			<dynamic-element dataType="boolean" indexType="keyword" name="AntwortRichtig" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Antwort ist richtig]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[false]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Antwort]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Frage]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="RueckmeldungGenerell" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-text-html" width="small">
+		<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="RueckmeldungFuerPunkte" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-text-html" width="small">
+			<dynamic-element dataType="integer" fieldNamespace="ddm" indexType="keyword" name="AnzahlRichtige" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-integer" width="small">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Anzeigen bei mindestens so vielen richtigen Antworten]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Rückmeldung abhängig von richtigen Antworten]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Rückmeldung generell]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>

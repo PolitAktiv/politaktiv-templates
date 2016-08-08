@@ -1,6 +1,6 @@
 ##
 ## Quiz-Darstellung und Funktionalität via JavaScript
-## Version 0.9
+## Version: PA Quiz TMP 0.9.1
 ##
 
 ## FIXME: das wird nicht funktionieren, wenn man ein Quiz 2x auf einer Seite hat
@@ -36,11 +36,7 @@ i.PA_Quiz_IconColor_Missing {
   color: red;
 }
 
-span.PA_Quiz_Formular_Icon {
-  display:inline-block;
-  width:3em;
-  text-align:center;
-}
+
 
 form.PA_Quiz_Formular label  {
   font-size:100%;
@@ -50,6 +46,23 @@ form.PA_Quiz_Formular input  {
   font-size:100%;
 }
 
+input.PA_Quiz_FormularElement {
+  ##display:inline-block;
+  display:block;
+  float:left;
+  margin-right:.5em !important;
+}
+
+span.PA_Quiz_Formular_Antwort {
+  display:block;
+}
+
+span.PA_Quiz_Formular_Icon {
+  display:block;
+  width:3em;
+  text-align:center;
+  float:left;
+}
 
 </style>
 
@@ -244,7 +257,7 @@ function meldungRegistrieren(elementID, anzahlMinKorrekt) {
 	                #set ($antwortCounter = 0)
 	                #foreach ($cur_Antwort in $cur_Frage.Antwort.getSiblings() )
 			    #set ($antwortIstRichtig = $getterUtil.getBoolean($cur_Antwort.AntwortRichtig.getData()) )
-	                    <label><span class="PA_Quiz_Formular_Icon"><i class="$iconEmpty" id="${frageID}_checker_${antwortCounter}"></i></span><input type="$selectType" id="${frageID}_antwort_${antwortCounter}" name="${frageID}" class="PA_Quiz_FormularElement" /> $htmlUtil.escape($cur_Antwort.getData())</label>
+	                    <label><span class="PA_Quiz_Formular_Icon"><i class="$iconEmpty" id="${frageID}_checker_${antwortCounter}"></i></span><input type="$selectType" id="${frageID}_antwort_${antwortCounter}" name="${frageID}" class="PA_Quiz_FormularElement" /><span class="PA_Quiz_Formular_Antwort">$htmlUtil.escape($cur_Antwort.getData())</span></label>
 	                    ## Element für die Auswertung in JavaScript-Daten registrieren:
 	                    <script language="JavaScript" type="text/javascript"><!--
 			      antwortRegistrieren('${frageID}_antwort_${antwortCounter}', '${frageID}_checker_${antwortCounter}',  '${frageID}', $antwortIstRichtig);
