@@ -1,0 +1,119 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="string" indexType="keyword" multiple="false" name="Intervall" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option3317" type="option" value="1500">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Sehr kurz]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option3318" type="option" value="4000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Kurz]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6351" type="option" value="10000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Mittel]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6352" type="option" value="20000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Lang]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6354" type="option" value="60000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Superlang]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Anzeigedauer einzelner Inhalte]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["5"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" multiple="false" name="FadeTime" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option8739" type="option" value="0">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Sofort (harte Überblendung)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option4379" type="option" value="200">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Sehr schnell]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8741" type="option" value="500">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Schnell]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8742" type="option" value="1000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Mittel]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8743" type="option" value="2000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Gemütlich]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8744" type="option" value="5000">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Schneckentempo]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Geschwindigkeit der Überblendung]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["1000"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Inhalt" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-text-html" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Inhalt]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
