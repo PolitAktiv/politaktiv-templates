@@ -1,0 +1,72 @@
+## Hübsche Darstellung der Teilnehmerliste
+## Wolfgang Heilmann Preis
+
+<style>
+div.heilmannTeilnehmerHeader {
+  background-color: #F4F4F4;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+}
+
+h3.heilmannTeilnehmerHeader {
+  margin-top:0px;
+}
+
+div.heilmannTeilnehmerEntry {
+
+  border: 1px solid #cccccc;
+  
+  margin-bottom:10px;
+
+}
+
+div.heilmannTeilnehmerFullContent {
+
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:0px;
+
+}
+
+h4.heilmannTeilnehmerHeader {
+  padding-top:0px;
+}
+
+
+</style>
+
+## Eineindeutige Kennung fuer diesen AssetPublisher holen
+###set ($instanceID = $portletDisplay.getInstanceId() )
+
+##$themeDisplay.getRequest().toString()
+
+## Keine Eintraege gefunden? Dann nix machen.
+#if (!$entries.isEmpty())
+
+    #set ($entryCounter = 0)
+
+    ## Über alle Einträge iterieren
+    #foreach ($curEntry in $entries)
+	#set ( $entryCounter = $entryCounter +1 )
+	
+	## Daten und Infos abholen
+	#set ( $viewURL = $assetPublisherHelper.getAssetViewURL($renderRequest, $renderResponse, $curEntry) )
+	#set($renderer = $curEntry.getAssetRenderer() )
+	#set( $journalArticle = $renderer.getArticle() )
+	
+	<div class="heilmannTeilnehmerEntry">
+	  <div class="heilmannTeilnehmerHeader">
+	  <a href="$viewURL"><h3 class="heilmannTeilnehmerHeader">$curEntry.getTitle("$locale")</h3></a>
+	  </div>
+	
+	  <div class="heilmannTeilnehmerFullContent">
+	  $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "")
+	  ##$curEntry.getContent()
+	  </div>
+	</div>  
+
+  ## Schleife über alle Einträge
+  #end 
+
+#end

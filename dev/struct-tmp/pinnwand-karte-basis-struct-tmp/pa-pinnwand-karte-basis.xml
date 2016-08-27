@@ -1,0 +1,71 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="string" indexType="keyword" name="Autor" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Autor]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" multiple="false" name="PaKarteFarbe" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option5767" type="option" value="blau">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Blau]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5768" type="option" value="gelb">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Gelb]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5769" type="option" value="grün">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Grün]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5770" type="option" value="pink">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Pink]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5771" type="option" value="weiß">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Weiß]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5772" type="option" value="default">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Voreinstellung]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Hintergrundfarbe]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["default"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>

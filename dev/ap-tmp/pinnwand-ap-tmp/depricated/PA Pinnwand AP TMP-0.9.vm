@@ -1,0 +1,367 @@
+## Pinnwand-Darstellung als Mod-Kärtchen
+
+## Version: 0.9
+
+## Einstellungen
+## Positionierung und Drehung zufällig justieren für "organischere" Darstellung
+## 0: nicht anwenden. Andere Werte: Stärke (0...100)
+#set ( $humanize = 25 )
+
+## Header sind Links zu Einzelposts
+#set ($headerLinks = true )
+
+## Zusammenfassung anzeigen? Andernfalls volle länge
+#set ($showSummary = false )
+
+## Standard-Farbe der Kärtchen
+#set ( $defaultColor = 'gelb' )
+
+## Zweispaltigkeit aktivieren?
+#set ($zweiSpaltig = true )
+
+## Benötigte externe Dateien
+#set ( $headingFontURL='/documents/314928/375525/Rock%2BSalt.ttf/43352de5-43ce-4017-98f3-475f1e8a03db' )
+#set ( $corkBgURL='//www.politaktiv.org/documents/10165/398679/corkHeller.jpg/9f297b33-a667-44a4-9f11-2a693eb99e13' )
+#set ( $imagePin = '/documents/314928/469438/pin.png/3c0c72d0-3796-4064-aa3d-8f1dc13a163b' ) 
+#set ( $borderImgURL = '/documents/314928/469438/rand.jpg/58769078-712c-4513-ae65-c39e5a9a3077?t=1467296305459' )
+
+## Hintergrundbilder für Kärtchen:
+#set ($bgImages = {
+'blau' : '/documents/314928/469438/modkarte-blau.png/839dd6d2-ecf7-4023-a969-7288b71b5730' ,
+'gelb' : '/documents/314928/469438/modkarte-gelb.png/f3ac4c28-84a2-46dc-8105-f6664d09924d' ,
+'grün' : '/documents/314928/469438/modkarte-gruen.png/707b6cb2-a1dd-444f-b699-4aee69128e7c',
+'pink' : '/documents/314928/469438/modkarte-pink.png/cb00770f-1d87-4da1-92d2-30b3514e042b' ,
+'weiß' : '/documents/314928/469438/modkarte-weiss.png/f9b5fe0a-637e-4960-b773-5e1f36f96afa'
+})
+
+## Metadaten-Icons:
+#set ($modifiedTimeIcon = "icon-calendar" )
+#set ($publishedTimeIcon = "icon-calendar" )
+#set ($createdTimeIcon = "icon-calendar" )
+#set ($expiresTimeIcon = "icon-calendar-empty" )
+#set ($viewCountIcon = "icon-eye-open" )
+#set ($tagIcon = "icon-tag" )
+#set ($categoryIcon = "icon-folder-close" )
+#set ($authorIcon = "icon-user" )
+#set ($authorPriority = "icon-long-arrow-up" )
+
+## Generische Icon-Klasse/Erweiterung für wichtige Formatierungen:
+#set ($genericIconClass = "PaStyleIconExtension")
+
+## Prefix für Farb-Kategorien.
+#set ( $colorCatPrefix = "PaPinnwandKarte" )
+
+
+
+
+
+<style>
+ 
+## font für Überschrift auf sticky-note
+@font-face {
+	font-family: Rock Salt;
+	src: url("$headingFontURL");	
+}
+
+
+ 
+div.PaPinnwandKork {
+	/* überschreibt style.css */
+	background-image: url('$corkBgURL');
+	
+	/* Abstand nach letzer Karte */
+	padding-bottom:15px;
+	
+	border: 5px solid transparent; 
+	
+	border-image: url('$borderImgURL') 50 round;
+	
+	overflow:hidden;
+	
+}
+
+div.PaPinnwandKarte h3.PaPinnwandKarteHeader {
+  font-family: Rock Salt, cursive;
+}
+
+div.PaPinnwandKarteOuter {
+  padding-left:15px;
+  padding-top:15px;
+  padding-right:15px;
+  padding-bottom:0px;
+  
+}
+
+@media (min-width:849px){
+  div.PaPinnwandKarteOuter2Spalten {
+    display:inline-block;
+    width:44%;
+  }
+}
+  @media (max-width:850px){
+    div.PaPinnwandKarteOuter2Spalten {
+  }
+}
+
+div.PaPinnwandKarteOuter2Spalten:nth-child(odd){
+    float:left;
+}
+div.PaPinnwandKarteOuter2Spalten:nth-child(even){
+    float:right;
+}
+
+
+div.PaPinnwandKarte {
+  min-height:12em;
+  background-color:white;
+  padding:20px;
+  border-radius: 2px;
+  margin: 1rem;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 10px 10px rgba(0,0,0,0.29);  
+  
+ 
+}
+
+hr.paPinnwandKarteAnzeige {
+  width:100%;
+  
+  padding:0px;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:10px;
+  margin-top:10px;
+  
+  border: 0; height: 1px; background: #333;
+}
+
+
+  
+
+
+img.PaPinnwandPin {
+    width:23px;
+    height:auto;
+    z-index:1000;
+    position:absolute;
+  left: 0;
+    right: 0;
+    top:8px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+h3.PaPinnwandKarteActionIcons {
+  float:right;
+}
+
+
+
+i.$genericIconClass:before {
+  display:inline !important;
+  padding-right:.25rem;
+}
+
+span.paPinnwandKarteMetadatenItem {
+  padding-right:.4rem;
+
+}
+
+
+div.paPinnwandKarteMetadaten {
+  text-align:right;
+  
+}
+
+</style>
+
+#set ( $dq = '"')
+
+
+<!-- Pinnwand-Container -->
+<div id="pinnwand_$instanceID" class="PaPinnwandKork">
+
+
+#if (!$entries.isEmpty())
+	
+    #set( $dateFormat = "dd.MM.yyyy - HH:mm")
+
+	#foreach ($curEntry in $entries)
+	  ## Sicherstellen, dass dies ein JournalArticle bzw. WebContent ist, sonst kracht es
+	  #set($renderer = $curEntry.getAssetRenderer() )
+	  #set($className = $renderer.getClassName() )
+
+	    ## prüfe, ob JournalArticle
+	  #if( $className == "com.liferay.portlet.journal.model.JournalArticle" )
+	  
+  	    #set ( $contentTitle = $htmlUtil.escape($curEntry.getTitle("$locale")) )
+  	    #set ( $journalArticle = $renderer.getArticle() )
+  	    #set ( $viewURL = $assetPublisherHelper.getAssetViewURL($renderRequest, $renderResponse, $curEntry) )
+					
+	    ## Inhalt: Zusammenfassung oder voller Inhalt  
+	    #set ($displayContent = "")
+	    #if ( $showSummary ) 
+	      #set ($displayContent = $renderer.getSummary( $locale ) ) 
+	    #else
+	      #set ( $displayContent = $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "") )
+	    #end
+	      
+	    ## Edit Button aktivieren oder nicht?
+	    #set ( $editLink = '' )
+	    #if ($renderer.hasEditPermission($themeDisplay.getPermissionChecker())) 
+	      ## jetzt muss der Edit-Button und seine Funktion gebastelt werden…
+	      #set ( $redirectURL = $renderResponse.createRenderURL() )
+	      $redirectURL.setParameter("struts_action", "/asset_publisher/add_asset_redirect")
+	      $redirectURL.setWindowState("pop_up")
+	      #set ( $editPortletURL = $renderer.getURLEdit($renderRequest, $renderResponse, $windowStateFactory.getWindowState("pop_up"), $redirectURL) )
+	      #if ( $validator.isNotNull($editPortletURL) )
+		  #set ( $editTitle = $languageUtil.format($locale, "edit-x", $htmlUtil.escape($renderer.getTitle($locale))) )
+		  #set ( $safeURL = $htmlUtil.escapeURL($editPortletURL.toString()) )
+		  #set ( $editURL = "javascript:Liferay.Util.openWindow({id:'$renderResponse.getNamespace()editAsset', title: '$editTitle', uri:'$safeURL'});" )
+		  #set ( $editLink = "<a href=${dq}${editURL}${dq}><i class=${dq}icon-edit-sign${dq}></i></a>" )
+	      #end
+	    #end
+	      
+	    ## "Humanizer" hier implementiert: Kärtchen zufällig rotieren, Reißzwecke zufällig positionieren
+	    #set ( $divStyle = "" )
+	    #set ( $pinStyle = "padding-right:20px;" )
+	    #if ( $humanize > 0 )
+	      ## Kärtchen zufällig leicht rotieren
+	      #set ( $rndRotate =  $humanize/50.0 - 2*$humanize/50.0 * ($mathTool.random(1,100) / 100.0) )
+	      #set ( $rndRotate =  $mathTool.roundTo(4, $rndRotate ) )
+	      #set ( $divStyle = "${divStyle} transform: rotate(${rndRotate}deg);" )
+	      ##Reißzwecke zufälliger positionieren
+	      #set ( $rndPosOffsetLeft =  $humanize/2.5 - $humanize/2.5 * ($mathTool.random(1,100) / 100.0) )
+	      #set ( $rndPosOffsetLeft =  $mathTool.round($rndPosOffsetLeft ) )
+	      #set ( $rndPosOffsetTop =  $humanize/5.0 - $humanize/5.0 * ($mathTool.random(1,100) / 100.0) )
+	      #set ( $rndPosOffsetTop =  $mathTool.round($rndPosOffsetTop ) )
+	      #set ( $pinStyle = "${pinStyle} padding-left:${rndPosOffsetLeft}px; padding-top:${rndPosOffsetTop}px;" )
+	  #end
+	  
+	  ## Header mit Links? 
+	  #if ( $headerLinks ) 
+	    #set ( $contentTitleDisplay = "<h3 class=${dq}PaPinnwandKarteHeader${dq}><a href=${dq}$viewURL${dq}>$contentTitle</h3></a>" )
+	  #else
+	    #set ( $contentTitleDisplay = "<h3 class=${dq}PaPinnwandKarteHeader${dq}>$contentTitle</h3>" )
+	  #end
+	  
+	  ## Action-Icons (Edit, Klappen) bauen oder nicht bauen?
+	  ## TODO: Klappen derzeit noch nicht imlplementiert
+	  #set ($actionIcons ='')
+	  #if ( $klappLink != '' || $editLink != '') 
+	    ###set ($actionIcons ="<h3 class=${dq}PaPinnwandKarteActionIcons${dq}>${klappLink} ${editLink}</a></h3>")
+	    #set ($actionIcons ="<h3 class=${dq}PaPinnwandKarteActionIcons${dq}>${editLink}</a></h3>")
+	  #end
+	  
+
+	  ## Hintergrundfarbe aus Kategoriesystem abholen versuchen
+	  #set ($PaKarteFarbe = "")
+	  #set ($categories = $curEntry.getCategories() )
+	  #if ( ! $categories.isEmpty() ) 
+	    ## Sparen: Lowercase zwischenspeichern
+	    #set ($colorCatPrefix_lc = $colorCatPrefix.toLowerCase())
+	    ## Über alle Kategorien loopen
+	    #foreach ( $curCat in $categories )
+	      ## Spar-Abkürzung: Nur weitersuchen, wenn Prefix des Kategorienamens passt
+	      #set ( $curCatTest = $curCat.name.trim().toLowerCase() )
+	      #if ( $curCatTest.startsWith($colorCatPrefix_lc) )
+		## Überprüfen, ob ein Farbname mit dem Kategoriename übereinstimmt
+		#foreach ( $curColor in $bgImages.keySet() )
+		  #set ( $testColor = "${colorCatPrefix}${curColor}" )
+		  #set ( $testColor = $testColor.toLowerCase() )
+		  #if ( $curCatTest.equals($testColor) )
+		    #set ($PaKarteFarbe = $curColor)
+		    #break ## Und und raus hier, sparen
+		  #end
+		#end
+	      #end
+	    #end
+	  #end
+	  
+
+	  ## Hintergrundfarbe dieses Kärtchens (falls nicht verfügbar: Default nehmen)
+	  #set ( $bgColorURL = "" )
+	  #set ( $bgColorURL = $bgImages.get($PaKarteFarbe) )
+	  #if ( $bgColorURL.equals("") ) 
+	    #set ( $bgColorURL = $bgImages.get($defaultColor) )
+	  #end
+	
+	  ## Metadaten: Die ganzen Datümer einsammeln
+	  #set ($modified = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.modifiedDate, $locale)) )	
+	  #set ($created = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.createDate, $locale)) )	
+	  #set ($expires = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.expirationDate, $locale)) )	
+	  #set ($published = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.publishDate, $locale)) )	
+
+	  ## Zweispaltigkeit?
+	  #set ($outerAddClass = "")
+	  #if ($zweiSpaltig)
+	    #set ($outerAddClass = " PaPinnwandKarteOuter2Spalten")
+	  #end  
+	
+			
+	  ## Und hier schlussendlich: Die Darstellung in HTML 
+	  <div class="PaPinnwandKarteOuter $outerAddClass" style="$divStyle">
+	    <div class="PaPinnwandKarte" style="background: url('$bgColorURL');">
+	      <img src="$imagePin" class="PaPinnwandPin" alt=""  style="$pinStyle" />
+	      
+	      <div class="paPinnwandModkarteHeader">
+		$actionIcons
+		$contentTitleDisplay
+	      </div>
+	      <div class="paPinnwandModkarteContent">
+		$displayContent
+	      </div>
+	    
+	      
+	    
+	    
+	      ## Und hier geht es durch alle Metadaten-Felder durch, die bei Bedarf (angeschaltet in Config) eingefügt werden
+	      #if (! $metadataFields.equals("") )
+		<div class="paPinnwandKarteMetadaten">
+		<hr class="paPinnwandKarteAnzeige" />
+	      #foreach ( $curField in $metadataFields.split(",") )
+		#if ( $curField.equals("view-count") && ($curEntry.viewCount == 1 ) )
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$viewCountIcon $genericIconClass"></i>$curEntry.viewCount&nbsp;Aufruf</span>
+		#elseif ( $curField.equals("view-count") )
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$viewCountIcon $genericIconClass"></i>$curEntry.viewCount&nbsp;Aufrufe</span>
+		#elseif ( $curField.equals("modified-date") && $modified  )
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$modifiedTimeIcon $genericIconClass"></i>$modified</span>
+		#elseif ( $curField.equals("create-date") && $created )
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$createdTimeIcon $genericIconClass"></i>$created</span>
+		#elseif ( $curField.equals("expiration-date") && $expires )  
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$expiresTimeIcon $genericIconClass"></i>$expires</span>
+		#elseif ( $curField.equals("publish-date") && $published )  
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$publishedTimeIcon $genericIconClass"></i>$pubished</span>
+		#elseif ( $curField.equals("author") )  
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$authorIcon $genericIconClass"></i>Autor:&nbsp;$htmlUtil.escape($curEntry.userName)</span>
+		#elseif ( $curField.equals("priority") )  
+		  <span class="paPinnwandKarteMetadatenItem"><i class="$authorPriority $genericIconClass"></i>Priorität:&nbsp;$curEntry.priority</span>
+		#elseif ( $curField.equals("tags") )  
+		  #set ($tags = $curEntry.getTags() )
+		  #if ( ! $tags.isEmpty() ) 
+		    #foreach ( $curTag in $tags )
+		      <span class="paPinnwandKarteMetadatenItem"><i class="$tagIcon $genericIconClass"></i>$htmlUtil.escape($curTag.name )</span>
+		    #end
+		  #end
+		#elseif ( $curField.equals("categories") )  
+		  #set ($categories = $curEntry.getCategories() )
+		  #if ( ! $categories.isEmpty() ) 
+		    #foreach ( $curCat in $categories )
+		      <span class="paPinnwandKarteMetadatenItem"><i class="$categoryIcon $genericIconClass"></i>$htmlUtil.escape($curCat.name )</span>
+		    #end
+		  #end
+		#end  
+	      #end
+	      </div>
+	    #end  ## if: Falls Metadaten angezeigt werden sollen
+	      
+		  
+	  </div>
+	</div>
+		  
+
+	  #end  	## if - Ende Pruefung auf JournalArticle
+    #end  ## foreach - Hauptschleife
+#end 	## if (!$entries.isEmpty())
+</div> ## Ende Pinnwand-Div

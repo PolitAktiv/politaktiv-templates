@@ -1,0 +1,97 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="string" indexType="keyword" name="Ueberschrift" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Überschrift]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="boolean" indexType="keyword" name="UeberschriftHintergrund" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Halbtransparenter Hintergrund hinter Überschrift]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[false]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" multiple="false" name="Hintergrundfarbe" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option7268" type="option" value="#dd0c30">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Rot]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7269" type="option" value="#6bc5d1">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Hellblau]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7270" type="option" value="#aac816">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Grün]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7271" type="option" value="#0c918f">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Cyan]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7272" type="option" value="#f59c17">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Orange dunkel]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7273" type="option" value="#f9b14f">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Orange hell]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Hintergrundfarbe]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[[""]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="image" fieldNamespace="wcm" indexType="keyword" name="Hintergrundbild" readOnly="false" repeatable="false" required="false" showLabel="true" type="wcm-image" width="">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Hintergrundbild]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>

@@ -1,0 +1,159 @@
+## PA Header Mitte TMP 1.3
+## ursprünglich von Niels Ott, Anfang 2016
+## modified by Thomas Bunke 31.03.2016
+## Finale version von Niels Ott, April 2016
+##
+
+
+
+## Standard-Hintergrundbild:
+#set ( $defaultHintergrund = "/documents/314928/0/pixabay-black-1072366_1920-bearbOtN.jpg/92810d6c-eed8-44c0-86a9-8c2efeb3b9cb" )
+
+## Schriftart und JS einbetten von hier:
+#set ( $fontURL = "/documents/314928/375525/Rock%2BSalt.ttf/43352de5-43ce-4017-98f3-475f1e8a03db")
+
+
+
+
+##http://howtocenterincss.com/#contentType=text&horizontal=center&vertical=middle&browser.IE=8
+##<div style="display:table;">
+##  <div style="display:table-cell;vertical-align:middle;">
+##    <div style="text-align:center;">Text Content</div>
+##  </div>
+##</div>
+
+## Falls Hintergrundbild definiert, dieses verwenden, ansonsten Dummy Hintergrund
+#if (! $Hintergrundbild.getData().equals("") )
+  #set ( $backgroundImg = $Hintergrundbild.getData() )
+#else
+  #set ( $backgroundImg = $defaultHintergrund )
+#end
+
+
+<style>
+
+@font-face {
+  font-family: Rock Salt;
+  src: url('$fontURL');	
+}
+
+h1.paHeaderMitteZ {
+  font-family: 'Rock Salt', cursive;
+  direction: ltr;
+  text-align:center;
+  
+}
+
+## Smartphone, Tablet etc. Anpassung
+
+## volle Groesse
+@media (min-width:1200px) {
+  h1.paHeaderMitteZ {
+    font-size:2rem !important;
+    line-height:2.2rem !important;  
+  }  
+}
+
+## Smartphone
+@media (min-width:480px) and (max-width:767px)  {
+  h1.paHeaderMitteZ {
+    font-size:1rem !important;
+    line-height:1.2rem !important;  
+  }  
+}
+@media (max-width:479px)  {
+  h1.paHeaderMitteZ {
+    font-size:.8rem !important;
+    line-height:1.1rem !important;  
+  }  
+}
+
+
+## Tablet
+@media (min-width:768px) and (max-width:979px) {
+  h1.paHeaderMitteZ {
+    font-size:1.5rem  !important;
+    line-height:1.7rem !important;  
+  }  
+}
+
+## Volle Groesse aber PC
+@media (min-width:980px) and (max-width:1199px)  {
+  h1.paHeaderMitteZ {
+    font-size: 2rem !important;    
+    line-height:2.4rem !important;  
+  }  
+}
+
+div.paHeaderMitteBox {
+}
+
+img.paHeaderHintergrundBild {
+  z-index:-1;
+  width:100%;
+}
+
+div.paHeaderMitteOuter {
+  display:table;
+  z-index:1;
+  position: absolute;
+  top: 0;
+  width:100%;
+}
+
+div.paHeaderMitteInner {
+  display:table-cell;
+  vertical-align:middle;
+  padding-top:20px;
+}
+</style>
+
+
+
+<div class="paHeaderMitteBox" id="paHeaderMitteBoxID">
+
+  ## Bild stellt Größe sicher!
+  <img src="$backgroundImg" class="paHeaderHintergrundBild" />
+
+  ## Diese DIVs liegen über dem Bild (z-index)
+  <div class="paHeaderMitteOuter" id="paHeaderMitteOuter" >
+    <div  class="paHeaderMitteInner">  
+      <h1 class="paHeaderMitteZ" style="color:$Textfarbe.getData() ;">$Ueberschrift.getData()</h1>
+    </div>  
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+## Größe der äußeren Box per Java-Script an Portlet-Größe anpassen
+function adjustSize() {
+    var hoehe = $('#paHeaderMitteBoxID').height();
+    $('#paHeaderMitteOuter').height(hoehe);
+}
+
+## Code, um Event-Handler zu installieren
+var addEvent = function(object, type, callback) {
+    if (object == null || typeof(object) == 'undefined') return;
+    if (object.addEventListener) {
+        object.addEventListener(type, callback, false);
+    } else if (object.attachEvent) {
+        object.attachEvent("on" + type, callback);
+    } else {
+        object["on"+type] = callback;
+    }
+};
+
+## Event-Handler registrieren: Bei Größenänderung des Fensters passiert's
+addEvent(window, "resize", function(event) { adjustSize(); });
+
+## Größe jetzt gleich anpassen
+adjustSize();
+
+## Sicherheitshalber Größe später nochmal anpassen
+window.setTimeout(adjustSize, 100);
+window.setTimeout(adjustSize, 200);
+ 
+
+</script>
