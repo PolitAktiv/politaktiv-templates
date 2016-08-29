@@ -1,0 +1,141 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="number" fieldNamespace="ddm" indexType="keyword" name="TilesPerRow" readOnly="false" repeatable="false" required="true" showLabel="true" type="ddm-number" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Kacheln pro Zeile]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="number" fieldNamespace="ddm" indexType="keyword" name="MinTileWidthPix" readOnly="false" repeatable="false" required="true" showLabel="true" type="ddm-number" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Minimale Kachelbreite (in Pixel) (Empfehlung: x < 1+(560/Gesamtbreite))]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="Tiles" readOnly="false" repeatable="true" required="false" showLabel="true" type="textarea" width="small">
+		<dynamic-element dataType="number" fieldNamespace="ddm" indexType="keyword" name="TileWidth" readOnly="false" repeatable="false" required="true" showLabel="true" type="ddm-number" width="small">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Kachelbreite]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Content" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-text-html" width="small">
+			<dynamic-element dataType="string" indexType="keyword" multiple="false" name="Allignment" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+				<dynamic-element name="option10448" type="option" value="top">
+					<meta-data locale="de_DE">
+						<entry name="label">
+							<![CDATA[oben anliegend]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option10449" type="option" value="center">
+					<meta-data locale="de_DE">
+						<entry name="label">
+							<![CDATA[zentriert]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option10450" type="option" value="bottom">
+					<meta-data locale="de_DE">
+						<entry name="label">
+							<![CDATA[unten anliegend]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Ausrichtung]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[["center"]]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Inhalt (HTML)]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" name="MouseoverText" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Mouseover-Text]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" name="PictureLink" readOnly="false" repeatable="false" required="true" showLabel="true" type="text" width="small">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Bild-Link]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" name="Link" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Link]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Inhalt]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[dies definiert eine Kachel]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
