@@ -99,6 +99,34 @@
         -ms-transform: translate(-50%, 0%); /* IE 9 */
         -webkit-transform: translate(-50%, 0%); /* Chrome, Safari, Opera */
     }  
+    
+    	/*
+		Media Queries:
+		Smartphone normal: <= 600px
+		Smartphone landscape: <= 767px
+		Tablet: <= 979px
+		Desktop: > 979px
+		*/
+		
+		@media (max-width: 600px) {
+    		header-box-inner{
+    			font-size: 10px !important;
+    		}
+    	}
+    	
+    	@media (max-width: 767px) {
+    		.header-box-inner{
+    			font-size: 12px !important;
+    		}
+    	}
+    	
+    	@media (max-width: 979px) {
+    		.header-box-inner{
+    			font-size: 14px !important;
+    		}
+    	}
+}
+		
 
 
 	</style>
