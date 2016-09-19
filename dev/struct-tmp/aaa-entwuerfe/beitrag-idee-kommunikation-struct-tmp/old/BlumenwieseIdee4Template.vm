@@ -1,0 +1,43 @@
+<div>$Text.getData()</div>
+
+<div>Verknüpfte Vorschlag Webcontent ID: $vorschlagIDs.getData() <strong>nur eine ID geht gerade</strong></div> 
+
+<div>Konstruierter Link zu Seite/AP: Funzt nicht (noch nicht? Wie URL konstruieren?) <strong>(Tobi)</strong></div>
+
+
+<div>Konstruierter Link zu Article Content-Anzeige (Anzeige funzt nicht und gibt angeblich immer Version 1.0 des Artikels, nicht dien eueste)
+<a href="/c/journal/view_article_content?groupId=$groupId&amp;articleId=$vorschlagIDs.getData()">Link</a></div>
+
+
+<h3>Vorschläge mit dieser Idee (nur einer geht gerade, mangels KnowHow von N. Käpsele nicht funktionierend):  <strong>(Tobi)</strong></h3>
+
+## kopiert von hier, funzt aber nicht: https://www.liferay.com/de/community/forums/-/message_boards/message/25356192
+#set ( $serviceContext = $portal.getClass().forName("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() )
+#set ($httpServletRequest = $serviceContext.getRequest())
+##get the real themeDisplay object, not the $themeDisplay map
+#set ($objThemeDisplay = $httpServletRequest.getAttribute("THEME_DISPLAY"))
+
+$httpServletRequest
+$objThemeDisplay
+
+$journalContentUtil.getContent($getterUtil.getLong($groupId), $vorschlagIDs.getData(),  "", "$locale", "")
+
+
+#set($journalArticleLocalService = $serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService" ))
+#set($assetEntryLocalService = $serviceLocator.findService("com.liferay.portlet.asset.service.AssetEntryLocalService" ))
+#set($currentArticle = $journalArticleLocalService.getArticle($getterUtil.getLong($groupId),$vorschlagIDs.getData()))
+#set($currentArticleResourcePrimKey = $currentArticle.getResourcePrimKey())
+#set($currentArticleAssetEntry = $assetEntryLocalService.getEntry("com.liferay.portlet.journal.model.JournalArticle", $currentArticleResourcePrimKey))
+#set($currentArticleAssetEntryEntryId = $currentArticleAssetEntry.getEntryId())
+#set($articleTitle = $currentArticle.getTitle($locale))
+
+$articleTitle
+$currentArticle.getId()
+$currentArticle
+
+</br>
+
+</br>
+
+</br>
+<span> Dies ist vermutlich die ID des Artikels in diesem Asset-Publisher: $reserved-article-id.getData()  </span>

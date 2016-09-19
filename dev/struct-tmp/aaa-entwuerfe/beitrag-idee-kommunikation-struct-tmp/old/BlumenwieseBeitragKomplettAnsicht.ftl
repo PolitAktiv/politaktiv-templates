@@ -1,0 +1,3 @@
+${Beitragstext.getData()}
+
+${EinMetaFeld.getData()}

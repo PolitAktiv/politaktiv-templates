@@ -1,0 +1,125 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="string" indexType="keyword" name="Aussage" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<dynamic-element dataType="string" indexType="keyword" multiple="false" name="Handlungsfeld" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+			<dynamic-element name="option7110" type="option" value="Private Haushalte">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Private Haushalte]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7111" type="option" value="Verkehr und Mobilität">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Verkehr und Mobilität]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7112" type="option" value="Energieversorgung&#047;-systeme">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Energieversorgung/-systeme]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7113" type="option" value="Konsum&#047;Einkaufsverhalten">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Konsum/Einkaufsverhalten]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7114" type="option" value="Gewerbe, Handel, Dienstleistungen">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Gewerbe, Handel, Dienstleistungen]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7115" type="option" value="Stadtplanung">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Stadtplanung]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7116" type="option" value="Kommunale Gebäude">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Kommunale Gebäude]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7117" type="option" value="Beschaffungswesen">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Beschaffungswesen]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7118" type="option" value="Bürgerbeteiligungsprozess">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Bürgerbeteiligungsprozess]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7119" type="option" value="Sonstiges">
+				<meta-data locale="de_DE">
+					<entry name="label">
+						<![CDATA[Sonstiges]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Handlungsfeld]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[[""]]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Aussage]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="QuelleURL" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="small">
+		<dynamic-element dataType="string" indexType="keyword" name="QuelleAutor" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<meta-data locale="de_DE">
+				<entry name="label">
+					<![CDATA[Autor (oder "Anonym")]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Quelle (URL)]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>

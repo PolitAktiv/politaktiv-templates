@@ -1,0 +1,29 @@
+
+<root available-locales="de_DE" default-locale="de_DE">
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Text" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-text-html" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Text]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" name="vorschlagIDs" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Verknüpfte Vorschlag IDs]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
