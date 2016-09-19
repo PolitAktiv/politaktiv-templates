@@ -1,1 +1,0 @@
-${Beitragstext.getData()}

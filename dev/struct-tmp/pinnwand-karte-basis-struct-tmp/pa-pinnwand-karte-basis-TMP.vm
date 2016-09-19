@@ -1,1 +1,0 @@
-<p><strong>Autor:</strong> $htmlUtil.escape($Autor.getData())</p>

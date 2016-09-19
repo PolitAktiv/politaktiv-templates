@@ -1,3 +1,0 @@
-<p><strong>Autor: </strong>$htmlUtil.escape($PaKarteAutor.getData())</p>
-
-$PaKarteInhalt.getData()

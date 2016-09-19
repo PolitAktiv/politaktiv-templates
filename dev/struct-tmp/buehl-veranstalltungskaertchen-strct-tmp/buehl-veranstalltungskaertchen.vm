@@ -1,9 +1,0 @@
-<p><strong>Autor:</strong> $htmlUtil.escape($Autor.getData())</p>
-
-<p><strong>Mir ist Klimaschutz wichtig, weil:</strong> $BuehlAuswahl.getData()</p>
-
-<p><strong>Meine Meinung zum Klimaschutz:</strong>
-
-$BuehlMeinung.getData()
-
-</p>
