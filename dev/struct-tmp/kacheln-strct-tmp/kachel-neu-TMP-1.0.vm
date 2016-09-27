@@ -1,0 +1,200 @@
+<head>
+
+	<style type="text/css">
+
+	/* ----- the outer box ------- */
+	#header-box-outer{
+		float: left; 
+		width: 100%;
+		height: auto;
+		text-align: center;
+		font-size: 0px; /* since we "float" the tiles like letters, using inline-blocks, set font-size to zero to avoid awkward spacing effects*/
+		line-height: 0px; /* same here */
+	}
+	
+	/* ----- the inner boxes ------- */
+	.header-box-inner{
+	    font-size: initial;
+	    line-height: initial; /* reset font size for content of tiles*/
+	}
+
+
+	/* ------ make the image heights fit the widths of background pictures -------- */
+
+	.stretch{
+		position:  absolute;  /* use absolute positioning to do this */
+		top: 0; 
+		left: 0; 
+		bottom: 0; 
+		right: 0;
+	}
+
+	.tile-stretch-1:before{
+		content: "";
+		display: block;
+		padding-top: 80.1%; 	/* ratio of 5:4 - standard tile; Ugly but working: 0.1 additional percent to work against browser-side rounding errors */
+	}
+	.tile-stretch-2:before{
+		content: "";
+		display: block;
+		padding-top: 40%; 	/* ratio of 10:4 - tile of twice the width*/
+	}
+
+	/* -------- the link with text ------- */
+	.tile-link{
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		margin-bottom: 10px;
+		color: white !important;
+		font-weight: 400 !important;
+		font-size: 16px;		/* TODO: define in structure or compute depending on number of tiles per row*/
+	}
+
+	/* -------- the container of the tiles ---------*/
+	.tile-container{
+		line-height: 20px; 
+		display:inline-block; 
+	 	position: relative; 
+		text-align: center;
+	}
+
+	/*--------- the background image ----------*/
+	.tile-background{
+		display: inline-block; 
+		background-size: 97% auto; 
+		background-repeat: no-repeat; 
+		background-position: 48.5% center; 
+		color: black;	
+	}
+	
+	/* -------- center the html content ---------*/
+	
+	/*------ TODO: alignment only works for 1x1 tiles--------*/
+	
+    .html-content-container-center{ 
+        width: 97%;
+        position: absolute;
+        left: 50%;
+        top: 48.5%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%); /* IE 9 */
+        -webkit-transform: translate(-50%, -50%); /* Chrome, Safari, Opera */
+    }    
+    .html-content-container-top{ 
+        width: 97%;
+        position: absolute;
+        left: 50%;
+        top: 1.5%;
+        transform: translate(-50%, 0%);
+        -ms-transform: translate(-50%, 0%); /* IE 9 */
+        -webkit-transform: translate(-50%, 0%); /* Chrome, Safari, Opera */
+    }  
+    
+    .html-content-container-bottom{
+        width: 97%;
+        position: absolute;
+        left: 50%;
+        bottom: 1.5%;
+        transform: translate(-50%, 0%);
+        -ms-transform: translate(-50%, 0%); /* IE 9 */
+        -webkit-transform: translate(-50%, 0%); /* Chrome, Safari, Opera */
+    }
+    
+    .html-content-container-bottom, .html-content-container-top{
+	    color: white !important;
+	    font-weight: 600 !important;
+	    line-height: 2 !important;
+    } 
+    
+    .html-content-container-center{
+	    color: white !important;
+	    font-weight: 600 !important;
+    } 
+    
+    
+    	/*
+		Media Queries:
+		Smartphone normal: <= 600px
+		Smartphone landscape: <= 767px
+		Tablet: <= 979px
+		Desktop: > 979px
+		*/
+		
+		@media (max-width: 600px) {
+    		.header-box-inner{
+    			font-size: 10px !important;
+    		}
+    	}
+    	
+    	@media (max-width: 767px) {
+    		.header-box-inner{
+    			font-size: 12px !important;
+    		}
+    	}
+    	
+    	@media (max-width: 979px) {
+    		.header-box-inner{
+    			font-size: 14px !important;
+    		}
+    	}
+    	
+	</style>
+
+</head>
+
+
+
+## Object for parsing
+#set($Integer = 0)
+
+## tiles per row
+#set ($tiles = $Integer.parseInt($TilesPerRow.getData()))
+
+## width of standard tile (implicitely floor)
+#set ($tileWidthSimple = 100/$tiles)
+
+
+<div id="header-box-outer">
+
+		## loop if some tiles are defined
+		#if (!$Tiles.getSiblings().isEmpty())
+					#foreach ($cur_tile in $Tiles.getSiblings())
+
+							## tile width multiplicator (simple tiles have mulitplicator of 1; wide tiles have multiplicator of 2)
+							#set ($multiplicator = $Integer.parseInt($cur_tile.TileWidth.getData()))
+
+							## effective tile width (in %)
+							#set ($tileWidthEff = $multiplicator * $tileWidthSimple)
+
+							## minimal tile width (for floating, in px)
+							#set ($minTileWidthEff = $Integer.parseInt($MinTileWidthPix.getData()) * $multiplicator)
+
+
+							## create mouseover text - for no defined text, show nothing
+							#set ($curMouseoverText = "")
+							#set ($curMouseoverText = $cur_tile.MouseoverText.getData()) ## no if required here
+
+								## create tile container
+								<div title="$curMouseoverText" class="tile-stretch-$multiplicator tile-container header-box-inner" style=" width: $tileWidthEff%; min-width: ${minTileWidthEff}px; "> 
+
+									## background image is surrounded by link (--> clickable)		
+									<a href="$htmlUtil.escapeHREF($cur_tile.Link.getData())" class="stretch tile-stretch-$multiplicator">	
+										<div class="stretch tile-background" style=" background-image: url($htmlUtil.escapeHREF($cur_tile.PictureLink.getData()));">
+											<div class="stretch"> 
+											
+											    <div class=" html-content-container-${cur_tile.Allignment.getData()}">
+											        $cur_tile.getData()
+											        ##<runtime-portlet instance="123456123" name="31" querystring=""></runtime-portlet>
+											    </div>
+											</div>							
+
+										</div>
+
+									</a>
+								</div> 
+					#end
+
+		#end
+</div>
