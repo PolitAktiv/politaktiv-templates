@@ -1,0 +1,118 @@
+##
+## Tag-Wolke umgesetzt als AssetPublisher Template
+## PA TagCloud AP TMP 0.9
+##
+
+## CSS-Silbentrennung benutzen? Kann in die gose gehen
+#set ($autoTrennung = false)
+
+## HashMap zur Zählung von Schlagwörtern
+## … und eine HashMap um die Anzeige-URLs abzuspeichern, die für jedes Schlagwort genriert werden
+#set ($tagCountMap = {})
+#set ($tagURLMap = {})
+
+## Anzahl der Schlagwörter bei den anzuzeigenden Beiträgen einsammeln
+## dabei gleich Maximum einsammeln (Watermark)
+#set ($maxTagCount = 0)
+#if (!$entries.isEmpty())
+	#foreach ($curEntry in $entries)
+		##$curEntry
+		#set ($tags = $curEntry.getTags() )
+		#if ( ! $tags.isEmpty() ) 
+		   #foreach ( $curTag in $tags )
+		   ##$curTag
+		      #set ($tagCount = false )
+		      #set ($tagCount = $tagCountMap.get($curTag.name))
+		      
+		      ## Tag bereits bekannt
+		      #if ( $tagCount )
+		        #set ($tagCount = $tagCount+1)
+			#set ($dummy = $tagCountMap.put($curTag.name,$tagCount))
+			## watermark updaten
+			#if ($tagCount > $maxTagCount)
+			  #set($maxTagCount =$tagCount)
+			#end
+		      ## Tag das erste mal gesehen	  
+		      #else
+			## Zähler initialisieren
+			#set ($dummy = $tagCountMap.put($curTag.name,1))
+			## URL generieren und speichern
+			#set ($tagDisplayURL = $renderResponse.createRenderURL())
+			$tagDisplayURL.setParameter("tag", $curTag.name)
+			
+			#set ($dummy = $tagURLMap.put($curTag.name,$tagDisplayURL))
+		      #end
+		    #end
+		#end
+		
+	#end
+
+
+	## Alle Schlagwort-Anzahlen sind bekannt, nun niedrigsten Count (low Watermark) einsammeln
+	#set ($minTagCount = $mathTool.pow(2,31))
+	#foreach ($tag in $tagCountMap.keySet())
+	  #set ($tagCount = $tagCountMap.get($tag) )
+	  #if ( $tagCount < $minTagCount )
+	    #set ($minTagCount = $tagCount)
+	  #end
+	#end
+	
+	## Neues Maximum ausrechnen: Das Tag mit der kleinsten Anzahl bestimmt Größe "normal"
+	## dadurch wird das tatsächliche Maximum entsprechend kleiner
+	#set ($offsetMax = $maxTagCount - $minTagCount)
+	
+	## Sind Tags ausgewählt? Falls ja, Reset-Link konstruieren
+	
+	#if ( $request.getParameterValues("tag") )
+	
+	  ## Reset-Link ermitteln und anzeigen
+	  #set ($displayURL = $renderResponse.createRenderURL())
+	
+	  ## Versuche, mehrere Tags zu übergeben, bisher gescheitert
+	  ###set($foo = ["stadt","gurkenhausen"])
+	  ##$displayURL.setParameter("tag", $foo) ## fehler
+	  ##$displayURL.addProperty("tag", "stadt gurkenhausen") ## produziert keine auswahl
+	
+	  ## Rausfinden, ob Tag-Auswahl vorliegt… 
+	  ## $displayURL.getParameterMap() ## fehler
+	
+	  ## Für Reset: Parameter löschen. Achtung: Wird hinterher der Parameter hinzugefügt, so scheint das wirkungslos, der Parameter ist weg.
+	  $displayURL.removePublicRenderParameter("tag")
+	  ##<div class="PaTagWolkeControl">
+	  <a href="$htmlUtil.escape($displayURL.toString())">
+	  <h2 class="PaTagWolkeControl taglib-categorization-filter  entry-title">
+	    <i class="icon-remove"></i>&nbsp;
+	    Auswahl zurücksetzen
+	  </h2>
+	  </a>
+	 ## </div>
+	#end ## Tags ausgewählt
+	
+	## Über alle eingesammtelten Tags drübergehen (alphabetisch sortiert)
+	#foreach ($tag in $sortTool.sort($tagCountMap.keySet()) )
+	  
+	  #set ($tagCount = $tagCountMap.get($tag) )
+	  #set ($tagDisplayURL = $tagURLMap.get($tag))
+	  
+	  ## Schriftgröße ausrechnen: zunächst normalisieren auf Wert zwischen 0 und 120
+	  #set ($tagCountNormalized = 130 * ( 0.0 + $tagCount - $minTagCount ) / $offsetMax )
+	  
+	  ## Erste einfache lineare Beziehung der Schriftgröße:
+	  #set ( $fontSize = 90 + $mathTool.round(  $tagCountNormalized   ) )
+	  ##$fontSize
+	  
+	  #set ($hypens = "")
+	  #if ( $autoTrennung ) 
+	    #set ($hypens = "hyphens: auto;")
+	  #end
+	  
+	  <span style="font-size: ${fontSize}%; $hyphens" lang="de">
+	    ##<a href="$htmlUtil.escape($tagDisplayURL)">$htmlUtil.escape($tag)&nbsp;($tagCount)</a>
+	    <a href="$htmlUtil.escape($tagDisplayURL.toString())">$htmlUtil.escape($tag)&nbsp;($tagCount)</a>
+	   </span>
+	  
+	
+	#end
+
+#end
+##if... Falls Einträge da sind

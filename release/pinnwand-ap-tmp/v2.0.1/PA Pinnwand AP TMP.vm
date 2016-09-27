@@ -1,6 +1,6 @@
 ## Pinnwand-Darstellung, zunächst als Mod-Kärtchen, später alles
 
-## Version: 2.1.0
+## Version: 2.0.1
 
 ## Einstellungen
 ## Positionierung und Drehung zufällig justieren für "organischere" Darstellung
@@ -19,14 +19,13 @@
 ## Zweispaltigkeit aktivieren?
 #set ($zweiSpaltig = false )
 
-#### Produktiv:
 ## Benötigte externe Dateien
 #set ( $headingFontURL='/documents/10165/386117/RockSalt-OtN.ttf/f338fd74-e6ba-4af4-8c30-52019a85fd66' )
 #set ( $corkBgURL='/documents/10165/398679/corkHeller.jpg/9f297b33-a667-44a4-9f11-2a693eb99e13' )
 #set ( $imagePin = '/documents/10165/398679/pin.png/dc29ce1a-a842-4a44-b010-968a359c019e' ) 
 #set ( $borderImgURL = '/documents/10165/398679/rand.jpg/641afe9d-5e1b-4e9a-a8dc-918be181c8fc' )
 
-##Hintergrundbilder für Kärtchen:
+## Hintergrundbilder für Kärtchen:
 #set ($bgImages = {
 'blau' : '/documents/10165/398679/modkarte-blau.png/063797a7-1ff4-4c23-94b3-61f327df863f' ,
 'gelb' : '/documents/10165/398679/modkarte-gelb.png/b4b618f4-4f48-4360-a278-d23e623baac4' ,
@@ -34,24 +33,6 @@
 'pink' : '/documents/10165/398679/modkarte-pink.png/a4cdec68-e575-472e-8bfc-e6e36b2f3115' ,
 'weiß' : '/documents/10165/398679/modkarte-weiss.png/9196ae7d-71f8-40bb-ad8b-8d66e41f4e97'
 })
-
-#### Intermediate:
-## Benötigte externe Dateien
-###set ( $headingFontURL='/documents/314928/375525/Rock%2BSalt.ttf/43352de5-43ce-4017-98f3-475f1e8a03db' )
-###set ( $corkBgURL='//www.politaktiv.org/documents/10165/398679/corkHeller.jpg/9f297b33-a667-44a4-9f11-2a693eb99e13' )
-###set ( $imagePin = '/documents/314928/469438/pin.png/3c0c72d0-3796-4064-aa3d-8f1dc13a163b' ) 
-###set ( $borderImgURL = '/documents/314928/469438/rand.jpg/58769078-712c-4513-ae65-c39e5a9a3077?t=1467296305459' )
-##
-#### Hintergrundbilder für Kärtchen:
-###set ($bgImages = {
-##'blau' : '/documents/314928/469438/modkarte-blau.png/839dd6d2-ecf7-4023-a969-7288b71b5730' ,
-##'gelb' : '/documents/314928/469438/modkarte-gelb.png/f3ac4c28-84a2-46dc-8105-f6664d09924d' ,
-##'grün' : '/documents/314928/469438/modkarte-gruen.png/707b6cb2-a1dd-444f-b699-4aee69128e7c',
-##'pink' : '/documents/314928/469438/modkarte-pink.png/cb00770f-1d87-4da1-92d2-30b3514e042b' ,
-##'weiß' : '/documents/314928/469438/modkarte-weiss.png/f9b5fe0a-637e-4960-b773-5e1f36f96afa'
-##})
-
-
 
 ## Metadaten-Icons:
 #set ($modifiedTimeIcon = "icon-calendar" )
@@ -95,9 +76,7 @@ div.PaPinnwandKork {
 	
 	border-image: url('$borderImgURL') 50 round;
 	
-	## Unklar, warum das nötig ist. Allerdings: In Webkit (Chrome/Safari) führt es dazu, dass
-	## Kärtchen in der rechten Spalte verschwinden
-	##overflow:hidden;
+	overflow:hidden;
 	
 }
 
@@ -114,29 +93,22 @@ div.PaPinnwandKarteOuter {
 }
 
 @media (min-width:849px){
-  div.PaPinnwandKork2Spalten {
-    ## Zweispaltiges Layout einschalten für Container
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
-  }
   div.PaPinnwandKarteOuter2Spalten {
-    ## Umbrechen von Karten im Spaltenlayout verbieten
-    -webkit-column-break-inside: avoid;
-    break-inside: avoid-column;
-    page-break-inside: avoid; 
+    display:inline-block;
+    width:44%;
   }
 }
-@media (max-width:850px){
-  div.PaPinnwandKork2Spalten {
-    ## zu schmal - kein Spaltenlayout
-  }
-  div.PaPinnwandKarteOuter2Spalten {
-    ## zu schmal - kein Spaltenlayout
+  @media (max-width:850px){
+    div.PaPinnwandKarteOuter2Spalten {
   }
 }
 
-
+div.PaPinnwandKarteOuter2Spalten:nth-child(odd){
+    float:left;
+}
+div.PaPinnwandKarteOuter2Spalten:nth-child(even){
+    float:right;
+}
 
 
 div.PaPinnwandKarte {
@@ -206,8 +178,6 @@ div.paPinnwandKarteMetadaten {
 
 #set ( $dq = '"')
 
-#set ($instanceID = $themeDisplay.getPortletDisplay().getInstanceId() )
-
 ## Reset-Link für Tag-Auswahl anzeigen, falls nötig
 #if ( $request.getParameterValues("tag") )
 	
@@ -226,22 +196,8 @@ div.paPinnwandKarteMetadaten {
  	## </div>
 #end ## Tags ausgewählt
 
-## Workaround: Gibt es nur ein einziges Kärtchen, so wird einspaltiges Layout benutzt
-## (Sonst kommt es zu irren Darstellung mit Internet Explorer)
-#if ( $entries.size() == 1 )
-  #set ( $zweiSpaltig = false )
-#end
-
-## Zweispaltigkeit?
-#set ($containerAddClass = "")
-#set ($outerAddClass = "")
-#if ($zweiSpaltig)
-  #set ($containerAddClass = " PaPinnwandKork2Spalten")
-  #set ($outerAddClass = " PaPinnwandKarteOuter2Spalten")
-#end  
-
 <!-- Pinnwand-Container -->
-<div id="pinnwand_$instanceID" class="PaPinnwandKork $containerAddClass">
+<div id="pinnwand_$instanceID" class="PaPinnwandKork">
 
 
 #if (!$entries.isEmpty())
@@ -354,7 +310,12 @@ div.paPinnwandKarteMetadaten {
 	  #set ($expires = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.expirationDate, $locale)) )	
 	  #set ($published = $dateTool.format("dd.MM.yy",  $dateTool.toDate("EEE, dd MMM yyyy hh:mm:ss Z",$curEntry.publishDate, $locale)) )	
 
-	
+	  ## Zweispaltigkeit?
+	  #set ($outerAddClass = "")
+	  #if ($zweiSpaltig)
+	    #set ($outerAddClass = " PaPinnwandKarteOuter2Spalten")
+	  #end  
+			
 	  ## Und hier schlussendlich: Die Darstellung in HTML 
 	  <div class="PaPinnwandKarteOuter $outerAddClass" style="$divStyle">
 	    <div class="PaPinnwandKarte" style="background: url('$bgColorURL');">

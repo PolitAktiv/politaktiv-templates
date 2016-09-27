@@ -2,7 +2,7 @@
 ## Lesezeichen im Asset Publisher im PolitAktiv Box Style darstellen
 ## Erste Fassung: April 2016, Niels Ott
 ##
-## PA Box Lesezeichen Klappen AP TMP 0.9.5
+## PA Box Lesezeichen NichtKlappen AP TMP 0.9.5
 ##
 ##
 
@@ -13,7 +13,7 @@
 #set ($linkTarget = "_blank")
 
 ## Ein/Ausklappen von Eingträgen?
-#set ($klappen = true)
+#set ($klappen = false)
 
 ## Standard-Einstellung für ein/ausklappen
 #set ( $defaultEingeklappt = true )
