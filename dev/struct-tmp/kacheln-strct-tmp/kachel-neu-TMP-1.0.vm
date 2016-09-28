@@ -139,6 +139,11 @@
     			font-size: 14px !important;
     		}
     	}
+
+    	/*--- Caroussel Styles ---*/
+    		.html-content-container-top .carousel {
+            	margin-bottom: 0px; //fixes allignemnt issue on chrome
+    	}
     	
 	</style>
 
