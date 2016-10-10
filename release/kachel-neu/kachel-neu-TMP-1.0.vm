@@ -14,7 +14,7 @@
 	
 	/* ----- the inner boxes ------- */
 	.header-box-inner{
-	    font-size: initial;
+	    font-size: 14px;
 	    line-height: initial; /* reset font size for content of tiles*/
 	}
 
