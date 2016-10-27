@@ -1,8 +1,10 @@
+##todo border initializiation
+
 <head>
 
 	<style type="text/css">
 
-	/* ----- the outer box ------- */
+	/* ----- the outer box ------- */ 
 	#header-box-outer{
 		float: left; 
 		width: 100%;
@@ -14,7 +16,7 @@
 	
 	/* ----- the inner boxes ------- */
 	.header-box-inner{
-	    font-size: 14px;
+	    font-size: initial;
 	    line-height: initial; /* reset font size for content of tiles*/
 	}
 
@@ -139,11 +141,28 @@
     			font-size: 14px !important;
     		}
     	}
+    	
+    /*--- Caroussel Styles ---*/
+    .html-content-container-top .carousel {
+            margin-bottom: 0px; //fixes allignemnt issue on chrome
+    }
+    
+    /*--- Participation Styles ---*/
+    .html-content-container-top .politaktiv-easy-participation-portlet .portlet-borderless-container,
+    .html-content-container-center .politaktiv-easy-participation-portlet .portlet-borderless-container,
+    .html-content-container-bottom .politaktiv-easy-participation-portlet .portlet-borderless-container{
+        padding: 0px;
+        margin: 0px;
+        min-height: 0px;
+        height: 0px;
+    }
+    .html-content-container-top .politaktiv-easy-participation-portlet .portlet-borderless-container{
+        margin-top: 5px;
+    }
+    .html-content-container-bottom .politaktiv-easy-participation-portlet .portlet-borderless-container{
+        margin-bottom: 40px;
+    }
 
-    	/*--- Caroussel Styles ---*/
-    		.html-content-container-top .carousel {
-            	margin-bottom: 0px; //fixes allignemnt issue on chrome
-    	}
     	
 	</style>
 
@@ -180,26 +199,43 @@
 							## create mouseover text - for no defined text, show nothing
 							#set ($curMouseoverText = "")
 							#set ($curMouseoverText = $cur_tile.MouseoverText.getData()) ## no if required here
+							
+							## create instance for possible portlet within this tile
+							## semantic: WC (=WebContent) + ID of current article + T (=Tile) + current tile number
+							#set ($curInnerPortletInstance = "WC${reserved-article-id.data}T${velocityCount}")
 
 								## create tile container
 								<div title="$curMouseoverText" class="tile-stretch-$multiplicator tile-container header-box-inner" style=" width: $tileWidthEff%; min-width: ${minTileWidthEff}px; "> 
-
-									## background image is surrounded by link (--> clickable)		
-									<a href="$htmlUtil.escapeHREF($cur_tile.Link.getData())" class="stretch tile-stretch-$multiplicator">	
+									#if ($cur_tile.Overwrite_Content_With_Portlet.getData() == "NONE")
+										## background image is surrounded by link (--> clickable)		
+										<a href="$htmlUtil.escapeHREF($cur_tile.Link.getData())" class="stretch tile-stretch-$multiplicator">	
+											<div class="stretch tile-background" style=" background-image: url($htmlUtil.escapeHREF($cur_tile.PictureLink.getData()));">
+												<div class="stretch"> 
+											    	<div class=" html-content-container-${cur_tile.Allignment.getData()}">
+											        	#if ($cur_tile.Overwrite_Content_With_Portlet.getData() == "NONE")
+											            	$cur_tile.getData()
+                                                    	#end
+											    	</div>
+												</div>							
+											</div>
+										</a>
+									#else
 										<div class="stretch tile-background" style=" background-image: url($htmlUtil.escapeHREF($cur_tile.PictureLink.getData()));">
 											<div class="stretch"> 
-											
 											    <div class=" html-content-container-${cur_tile.Allignment.getData()}">
-											        $cur_tile.getData()
-											        ##<runtime-portlet instance="123456123" name="31" querystring=""></runtime-portlet>
+											        #if ($cur_tile.Overwrite_Content_With_Portlet.getData() == "CAROUSEL")
+											            <runtime-portlet instance="CAROUSEL${curInnerPortletInstance}" name="31" querystring=""></runtime-portlet>
+											        #end
+											        #if ($cur_tile.Overwrite_Content_With_Portlet.getData() == "PARTICIPATE")
+											        	<runtime-portlet instance="PARTICIPATE${curInnerPortletInstance}" name="politaktiveasyparticipation_WAR_politaktiveasyparticipationportlet" querystring=""></runtime-portlet>
+											        #end
+
 											    </div>
 											</div>							
 
 										</div>
-
-									</a>
+									#end
 								</div> 
 					#end
-
 		#end
 </div>
