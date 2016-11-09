@@ -41,6 +41,16 @@
 		display: block;
 		padding-top: 40%; 	/* ratio of 10:4 - tile of twice the width*/
 	}
+	.tile-stretch-3:before{
+        	content: "";
+        	display: block;
+        	padding-top: 26.6%;     /* ratio of 15:4 - tile of triple the width*/
+    	}
+    	.tile-stretch-4:before{
+        	content: "";
+        	display: block;
+        	padding-top: 20%;     /* ratio of 20:4 - tile of triple the width*/
+    	}
 
 	/* -------- the link with text ------- */
 	.tile-link{
