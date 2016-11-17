@@ -1,11 +1,23 @@
-##todo border initializiation
+## Object for parsing
+#set($Double = 0.0)
+
+## Set tile ratios
+#set($picRatio = $Double.parseDouble($NativePicRatio.getData()))
+#set($halfPicRatio = $picRatio / 2)
+#set($thirdPicRatio =  $picRatio / 3)
+#set($forthPicRatio =  $picRatio / 4)
+
+## create css class wrapping the whole content, webcontent specific
+## avoids css-confusion if multiple tile-webcontents are on one the same page
+#set ($wcID = "wc${reserved-article-id.data}")
+
 
 <head>
 
 	<style type="text/css">
 
-	/* ----- the outer box ------- */ 
-	#header-box-outer{
+	/* ----- the outer box ------- */
+	#${wcID}header-box-outer{
 		float: left; 
 		width: 100%;
 		height: auto;
@@ -13,17 +25,17 @@
 		font-size: 0px; /* since we "float" the tiles like letters, using inline-blocks, set font-size to zero to avoid awkward spacing effects*/
 		line-height: 0px; /* same here */
 	}
-	
+
 	/* ----- the inner boxes ------- */
-	.header-box-inner{
-	    font-size: initial;
+	#${wcID}header-box-outer .header-box-inner{
+	    font-size: 14px;
 	    line-height: initial; /* reset font size for content of tiles*/
 	}
 
 
 	/* ------ make the image heights fit the widths of background pictures -------- */
 
-	.stretch{
+	#${wcID}header-box-outer .stretch{
 		position:  absolute;  /* use absolute positioning to do this */
 		top: 0; 
 		left: 0; 
@@ -31,29 +43,32 @@
 		right: 0;
 	}
 
-	.tile-stretch-1:before{
+	#${wcID}header-box-outer .tile-stretch-1:before{
 		content: "";
 		display: block;
-		padding-top: 80.1%; 	/* ratio of 5:4 - standard tile; Ugly but working: 0.1 additional percent to work against browser-side rounding errors */
+		padding-top: ${picRatio}%; 	/* ratio of 4:5 - standard tile */
 	}
-	.tile-stretch-2:before{
+	
+
+	#${wcID}header-box-outer .tile-stretch-2:before{
 		content: "";
 		display: block;
-		padding-top: 40%; 	/* ratio of 10:4 - tile of twice the width*/
+		padding-top: ${halfPicRatio}%; 	/* ratio of 4:10 - tile of twice the width*/
 	}
-	.tile-stretch-3:before{
-        	content: "";
-        	display: block;
-        	padding-top: 26.6%;     /* ratio of 15:4 - tile of triple the width*/
-    	}
-    	.tile-stretch-4:before{
-        	content: "";
-        	display: block;
-        	padding-top: 20%;     /* ratio of 20:4 - tile of triple the width*/
-    	}
+		
+	#${wcID}header-box-outer .tile-stretch-3:before{
+		content: "";
+		display: block;
+		padding-top: ${thirdPicRatio}%; 	/* ratio of 4:15 - tile of triple the width*/
+	}
+	#${wcID}header-box-outer .tile-stretch-4:before{
+		content: "";
+		display: block;
+		padding-top: ${forthPicRatio}%; 	/* ratio of 4:20 - tile of triple the width*/
+	}
 
 	/* -------- the link with text ------- */
-	.tile-link{
+	#${wcID}header-box-outer .tile-link{
 		position: absolute;
 		left: 0px;
 		right: 0px;
@@ -65,7 +80,7 @@
 	}
 
 	/* -------- the container of the tiles ---------*/
-	.tile-container{
+	#${wcID}header-box-outer .tile-container{
 		line-height: 20px; 
 		display:inline-block; 
 	 	position: relative; 
@@ -73,7 +88,7 @@
 	}
 
 	/*--------- the background image ----------*/
-	.tile-background{
+	#${wcID}header-box-outer .tile-background{
 		display: inline-block; 
 		background-size: 97% auto; 
 		background-repeat: no-repeat; 
@@ -85,7 +100,7 @@
 	
 	/*------ TODO: alignment only works for 1x1 tiles--------*/
 	
-    .html-content-container-center{ 
+    #${wcID}header-box-outer .html-content-container-center{ 
         width: 97%;
         position: absolute;
         left: 50%;
@@ -94,7 +109,7 @@
         -ms-transform: translate(-50%, -50%); /* IE 9 */
         -webkit-transform: translate(-50%, -50%); /* Chrome, Safari, Opera */
     }    
-    .html-content-container-top{ 
+    #${wcID}header-box-outer .html-content-container-top{ 
         width: 97%;
         position: absolute;
         left: 50%;
@@ -104,7 +119,7 @@
         -webkit-transform: translate(-50%, 0%); /* Chrome, Safari, Opera */
     }  
     
-    .html-content-container-bottom{
+    #${wcID}header-box-outer .html-content-container-bottom{
         width: 97%;
         position: absolute;
         left: 50%;
@@ -114,17 +129,39 @@
         -webkit-transform: translate(-50%, 0%); /* Chrome, Safari, Opera */
     }
     
-    .html-content-container-bottom, .html-content-container-top{
+    #${wcID}header-box-outer .html-content-container-bottom, .html-content-container-top{
 	    color: white !important;
 	    font-weight: 600 !important;
 	    line-height: 2 !important;
     } 
     
-    .html-content-container-center{
+    #${wcID}header-box-outer .html-content-container-center{
 	    color: white !important;
 	    font-weight: 600 !important;
     } 
     
+        	
+    /*--- Caroussel Styles ---*/
+    #${wcID}header-box-outer .html-content-container-top .carousel {
+            margin-bottom: 0px; //fixes allignemnt issue on chrome
+    }
+    
+    /*--- Participation Styles ---*/
+    #${wcID}header-box-outer .html-content-container-top .politaktiv-easy-participation-portlet .portlet-borderless-container,
+    #${wcID}header-box-outer .html-content-container-center .politaktiv-easy-participation-portlet .portlet-borderless-container,
+    #${wcID}header-box-outer .html-content-container-bottom .politaktiv-easy-participation-portlet .portlet-borderless-container{
+        padding: 0px;
+        margin: 0px;
+        min-height: 0px;
+        height: 0px;
+    }
+    #${wcID}header-box-outer .html-content-container-top .politaktiv-easy-participation-portlet .portlet-borderless-container{
+        margin-top: 5px;
+    }
+    #${wcID}header-box-outer .html-content-container-bottom .politaktiv-easy-participation-portlet .portlet-borderless-container{
+        margin-bottom: 40px;
+    }
+
     
     	/*
 		Media Queries:
@@ -135,44 +172,24 @@
 		*/
 		
 		@media (max-width: 600px) {
-    		.header-box-inner{
+    		#${wcID}header-box-outer .header-box-inner{
     			font-size: 10px !important;
     		}
     	}
     	
     	@media (max-width: 767px) {
-    		.header-box-inner{
+    		#${wcID}header-box-outer .header-box-inner{
     			font-size: 12px !important;
     		}
     	}
     	
     	@media (max-width: 979px) {
-    		.header-box-inner{
+    		#${wcID}header-box-outer .header-box-inner{
     			font-size: 14px !important;
     		}
     	}
-    	
-    /*--- Caroussel Styles ---*/
-    .html-content-container-top .carousel {
-            margin-bottom: 0px; //fixes allignemnt issue on chrome
-    }
-    
-    /*--- Participation Styles ---*/
-    .html-content-container-top .politaktiv-easy-participation-portlet .portlet-borderless-container,
-    .html-content-container-center .politaktiv-easy-participation-portlet .portlet-borderless-container,
-    .html-content-container-bottom .politaktiv-easy-participation-portlet .portlet-borderless-container{
-        padding: 0px;
-        margin: 0px;
-        min-height: 0px;
-        height: 0px;
-    }
-    .html-content-container-top .politaktiv-easy-participation-portlet .portlet-borderless-container{
-        margin-top: 5px;
-    }
-    .html-content-container-bottom .politaktiv-easy-participation-portlet .portlet-borderless-container{
-        margin-bottom: 40px;
-    }
 
+	
     	
 	</style>
 
@@ -190,7 +207,8 @@
 #set ($tileWidthSimple = 100/$tiles)
 
 
-<div id="header-box-outer">
+
+<div id="${wcID}header-box-outer">
 
 		## loop if some tiles are defined
 		#if (!$Tiles.getSiblings().isEmpty())

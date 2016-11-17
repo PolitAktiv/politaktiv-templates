@@ -26,6 +26,19 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
+	<dynamic-element dataType="double" fieldNamespace="ddm" indexType="keyword" name="NativePicRatio" readOnly="false" repeatable="false" required="true" showLabel="true" type="ddm-decimal" width="small">
+		<meta-data locale="de_DE">
+			<entry name="label">
+				<![CDATA[Bitte das Verhältnis von Höhe zu Breite einer einfachen Kachel angeben (in %, eine Kommastelle; Abtrennung durch Punkt) (z.B.: 154/300 = 0.51333 = 51.3 --> 51.3 eingeben)]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
 	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" name="Tiles" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-text-html" width="small">
 		<dynamic-element dataType="string" indexType="keyword" name="MouseoverText" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
 			<meta-data locale="de_DE">
