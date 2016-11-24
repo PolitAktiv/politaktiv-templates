@@ -17,7 +17,7 @@
 #set ( $defaultColor = 'gelb' )
 
 ## Zweispaltigkeit aktivieren?
-#set ($zweiSpaltig = false )
+#set ($zweiSpaltig = true )
 
 #### Produktiv:
 ## Benötigte externe Dateien

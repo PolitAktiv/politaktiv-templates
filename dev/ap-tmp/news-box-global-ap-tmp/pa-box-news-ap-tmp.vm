@@ -1,7 +1,8 @@
 ##
-## Asset Publisher Vorlage für die NewsSpalte
+## News-Spalte als Box-Style Layout für Asset Publisher für PolitAktiv gesamt
 ##
-
+## PA Box News AP TMP 0.9.6
+##
 
 <style>
 div.PAnewsBoxHeader {
@@ -13,6 +14,8 @@ div.PAnewsBoxHeader {
 
 h3.PAnewsBoxHeader {
   margin-top:0px;
+  padding-top:10px;
+  margin-bottom:8px;  
 }
 
 div.PAnewsBoxEntry {
@@ -28,6 +31,7 @@ div.PAnewsBoxFullContent {
   padding-left:10px;
   padding-right:10px;
   padding-top:0px;
+  margin-bottom:10px;
 
 }
 
@@ -89,7 +93,7 @@ hr.PAnewsBox {
 	
 	
 	  <div class="PAnewsBoxFullContent">
-	  $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "")
+	  $journalContentUtil.getContent($getterUtil.getLong($journalArticle.getGroupId()), $journalArticle.getArticleId(), "", "$locale", "")
 	  $editLink	  
 	  </div>
 	  ## Falls nicht letzter Eintrag: Trenner einblenden

@@ -1,7 +1,7 @@
 ##
 ## Generisches BoxDesign für Asset Publisher für PolitAktiv gesamt
 ##
-## PA Box Style KlappenHeaderLinks AP TMP 0.9.6
+## PA Box Style AP TMP 0.9.6
 ##
 
 ## Darstellungs-Optionen
@@ -163,7 +163,7 @@ function toggleDetails(trID,instanceID) {
 	#set( $journalArticle = $renderer.getArticle() )
 	#set ( $contentTitle = $htmlUtil.escape($curEntry.getTitle("$locale")) )
 	#set ( $kurzfassung = $renderer.getSummary( $locale ) )
-	#set ( $langfassung = $journalContentUtil.getContent($getterUtil.getLong($groupId), $journalArticle.getArticleId(), "", "$locale", "") )
+	#set ( $langfassung = $journalContentUtil.getContent($getterUtil.getLong($journalArticle.getGroupId()), $journalArticle.getArticleId(), "", "$locale", "") )
 	
 	## Edit Button aktivieren oder nicht?
 	#set ( $editLink = '' )
