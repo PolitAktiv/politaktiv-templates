@@ -6,9 +6,9 @@
 
 ## Darstellungs-Optionen
 ## TODO: Können die Konfigurierbar gemacht werden?
-#set ( $klappen = false )
+#set ( $klappen = true )
 #set ( $defaultEingeklappt = true )
-#set ( $headerLinks = false )
+#set ( $headerLinks = true )
 
 
 ## Doku Icons plus minus etc:
