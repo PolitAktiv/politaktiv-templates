@@ -95,6 +95,9 @@
 		background-position: 48.5% center; 
 		color: black;	
 	}
+	#${wcID}header-box-outer .tile-stretch-2 .tile-background{
+		background-size: 98.5% auto; 
+	}	
 	
 	/* -------- center the html content ---------*/
 	
