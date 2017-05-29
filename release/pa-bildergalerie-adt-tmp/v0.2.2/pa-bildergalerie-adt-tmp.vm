@@ -62,7 +62,8 @@ div.PaGallery img {
   border-radius:2px;
   margin-bottom:4px;
   
-    max-height:250px;
+  width:100%;
+  max-height:250px;
 }
 
 ## Größen-Einstellung für Thumbnails und FlexFiller müssen gleich sein:
