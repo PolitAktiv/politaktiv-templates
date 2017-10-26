@@ -101,9 +101,9 @@
 	  #set ( $fontSize = 90 + $mathTool.round(  $tagCountNormalized   ) )
 	  ##$fontSize
 	  
-	  #set ($hyphens = "")
+	  #set ($hypens = "")
 	  #if ( $autoTrennung ) 
-	    #set ($hyphens = "hyphens: auto;")
+	    #set ($hypens = "hyphens: auto;")
 	  #end
 	  
 	  <span style="font-size: ${fontSize}%; $hyphens" lang="de">
