@@ -1,0 +1,175 @@
+##
+## Display Template für die Bildergalerie. Spezialversion zur Anzeige von Plakaten, die das PlakatOhR Portlet erstellt hat
+## Version: PA Plakatohr Template TMP 0.2.3
+##
+
+
+<style>
+
+div.PaGallery {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display:flex; 
+  
+  -webkit-flex-wrap: wrap;
+  -ms-flex-flow: wrap;
+  flex-wrap:wrap; 
+
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: space-between;
+  justify-content:space-between;
+ 
+ 
+  ##align-content:flex-start;
+  margin:-10px;
+
+}
+
+div.PaGallery img {
+  ##max-height:150px;
+  ##width:22%;
+  ##border: 1px solid #cccccc;
+  border-top: 2px solid #dedede;
+  border-left: 2px solid #dedede;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  border-radius:2px;
+  margin-bottom:4px;
+  
+  width:100%;
+  max-height:250px;
+}
+
+## Größen-Einstellung für Thumbnails und FlexFiller müssen gleich sein:
+div.PaGalleryFlexFiller, div.PaGalleryThumbnail {
+  margin:10px;
+  padding:8px;
+  padding-right:10px;
+  text-align:center;
+
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  
+
+  width:20%;
+  min-width:170px;
+  
+}
+
+## FlexFiller hat keine Höhe, um unsichtbar zu sein, falls eine 
+## Zeile nur Filler enthält
+div.PaGalleryFlexFiller {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top:0px;
+  padding-bottom:0px;
+  height:0px;
+}
+
+## Einstellungen, die nicht für FlexFiller, wohl aber für Thumnails gelten:
+div.PaGalleryThumbnail {
+  background-color: #f4f4f4;
+  border: 1px solid #cccccc;
+  
+  font-size:0.845em;
+
+  display: -webkit-flex;
+  display:flex;
+
+  
+  -webkit-flex-wrap: wrap;
+  flex-wrap:wrap;
+   
+  -webkit-flex-direction: column;  
+  flex-direction: column;
+
+  
+}
+
+## Ganz dreckiger Hack, um Internet Explorer ab Version 10 zu finden
+## und dort die innere Flexbox in den Thumbnails auszuschalten
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  div.PaGalleryThumbnail { 
+    display:block;
+  }
+}  
+
+div.PaGalleryImg {
+  margin:auto;
+}
+
+div.PaGalleryImgTitle {
+ width:100%;
+}
+
+div.PaGalleryImgLegend {
+  ##font-size:0.845em;
+  text-align:center;
+  padding-top:5px;
+}
+
+
+</style>
+
+#set ($instanceID = $themeDisplay.getPortletDisplay().getInstanceId() )
+
+#set ( $dq = '"' )
+
+
+
+<div id="galerie_$instanceID" class="PaGallery">
+
+
+
+#if (!$entries.isEmpty())
+	#foreach ($curFileEntry in $entries)
+	
+	##$curFileEntry.class
+
+	  #if ( $curFileEntry.mimeType.startsWith("image/") )
+	  
+	    ## File-URL zusammenbasteln (argl)
+	    #set ($fileURL = "$themeDisplay.getPortalURL()$themeDisplay.getPathContext()/documents/$themeDisplay.getScopeGroupId()/$curFileEntry.getFolderId()/$httpUtil.encodeURL($htmlUtil.unescape($curFileEntry.getTitle()))" )
+	    
+	    ## Endung austauschen für PDF
+	    #set ( $extPosition = $fileURL.lastIndexOf(".jpg") )
+	    
+	    #set ( $pdfURL = $fileURL.substring(0,$extPosition) )
+	    #set ( $pdfExt = ".pdf" )
+	    #set ( $pdfURL = "$pdfURL$pdfExt" )
+	    
+	    
+	    <div class="PaGalleryThumbnail">
+	      <div class="PaGalleryImg">
+	        ##<a href="$fileURL" data-featherlight="image" title="$htmlUtil.escape($curFileEntry.description)" target="_blank">
+		<a href="$pdfURL" title="$htmlUtil.escape($curFileEntry.description)"  target="_blank">
+		  <img src="$fileURL"  alt="Bild: $htmlUtil.escape($curFileEntry.description)" />
+		</a>
+	      </div>
+	    #if ($curFileEntry.description && ! $curFileEntry.description.equals("") )
+	      ##<br />
+	     <div class="PaGalleryImgTitle">$htmlUtil.escape($curFileEntry.description)</div>
+	    #end  
+	   </div>
+	  
+	  
+	  #end ## Mime Type IMAGE
+	
+	
+	#end
+	
+	## flex-box auffüllen: Wir haben maximal 4 Spalten, also drei "leere Bilder",
+	## die genau die gleiche Breite annehmen wie ein Bild, aber keine Höhe
+	## und damit unsichtbar sind, wenn sie in die nächste Zeile flutschen
+	<div class="PaGalleryFlexFiller"></div>
+	<div class="PaGalleryFlexFiller"></div>
+	<div class="PaGalleryFlexFiller"></div>
+	
+	
+	
+#end
+
+
+
+
+</div>
