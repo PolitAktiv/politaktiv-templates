@@ -1,0 +1,64 @@
+##
+## This is the template for the freely customizable header box
+## Last update: 30.05.2018 - Marcel Eckert - initial version
+##
+
+<style>
+.headerBox {
+    position: relative;
+    float: left;
+    width: 100%;
+    height: 200px
+}
+
+.headerBoxContent img {
+    width: 100%;
+}
+
+.headerBoxContent {
+  width: 100%;  
+}
+
+.socialMediaIcon {
+    position: absolute;
+    top: 10px;
+    width: 30px;
+}
+
+.leftIcon {
+    right: 90px;
+}
+
+.middleIcon {
+    right: 50px;
+}
+
+.rightIcon {
+    right: 10px;
+}
+
+.clear {
+    clear: both;
+}
+</style>
+
+## Get the freely customizable data from the structure and place it in here
+<div class="headerBox">
+    <div class="headerBoxContent">
+        $inhalt.getData()
+    </div>
+    
+    ## Add social media icons with links on top of the data
+    <a href="https://www.facebook.com/PolitAktiv" title="PolitAktiv auf Facebook">
+        <img class="socialMediaIcon leftIcon" alt="Facebook Logo" src="/documents/20142/41195/facebook_22567.png/f8c12476-b9b0-b68a-285f-c8ab0d0f657e?t=1527686243036">
+    </a>
+    <a href="https://plus.google.com/115375720507090899601/" title="PolitAktiv auf Google+">
+        <img class="socialMediaIcon middleIcon" alt="Google+ Logo" src="/documents/20142/41195/google-128.png/a804a146-74f4-9271-256e-998f6617ab52?t=1527686243142">
+    </a>
+    <a href="https://twitter.com/PolitAktiv" title="PolitAktiv auf Twitter">
+        <img class="socialMediaIcon rightIcon" alt="Twitter Logo" src="/documents/20142/41195/Twitter-icon.png/4a54c59e-f16d-4c1a-8d48-699e40c26bd8?t=1527686243193">
+    </a>
+</div>
+
+## DIV to clear in order to not let the pictures grow out of the portlet box
+<div class="clear"></div>

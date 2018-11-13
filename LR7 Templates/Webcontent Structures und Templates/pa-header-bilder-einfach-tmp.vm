@@ -1,0 +1,80 @@
+##
+## This is the template for the simple header box with pictures
+## Last update: 30.05.2018 - Marcel Eckert - initial version
+##
+
+<style>
+.headerBox {
+    position: relative;
+}
+
+.headerBoxContent {
+  float: left;
+}
+
+.socialButtons {
+    margin-right: 15px;
+}
+
+.headerBoxContent img {
+    max-height: 200px;
+    float: left;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.socialMediaIcon {
+    position: absolute;
+    top: 10px;
+    width: 30px;
+    margin-right: 15px;
+}
+
+.leftIcon {
+    right: 95px;
+}
+
+.middleIcon {
+    right: 55px;
+}
+
+.rightIcon {
+    right: 15px;
+}
+
+.clear {
+    clear: both;
+}
+</style>
+
+## Get every picture and the desired width and put them next to eachother
+<div class="headerBox container-fluid-1280">
+    <div class="headerBoxContent">
+        #if (!$bild.getSiblings().isEmpty())
+	        #foreach ($cur_bild in $bild.getSiblings())
+	            #set ($cur_bild_width = $cur_bild.prozent.getData())
+                ##set($Integer = 0)
+                ##$Integer.parseInt($cur_bild_width)
+                ##set ($width_withBorder = $Integer - 1)
+	            #set ($cur_bild_width_final = $cur_bild_width + "%")
+		        <img src="$cur_bild.getData()" width="$cur_bild_width_final">
+	        #end
+        #end
+    </div>
+    
+    <div class="socialButtons">
+    ## Add social media icons with links on top of the pictures
+    <a href="https://www.facebook.com/PolitAktiv" title="PolitAktiv auf Facebook">
+        <img class="socialMediaIcon leftIcon" alt="Facebook Logo" src="/documents/20142/41195/facebook_22567.png/f8c12476-b9b0-b68a-285f-c8ab0d0f657e?t=1527686243036">
+    </a>
+    <a href="https://plus.google.com/115375720507090899601/" title="PolitAktiv auf Google+">
+        <img class="socialMediaIcon middleIcon" alt="Google+ Logo" src="/documents/20142/41195/google-128.png/a804a146-74f4-9271-256e-998f6617ab52?t=1527686243142">
+    </a>
+    <a href="https://twitter.com/PolitAktiv" title="PolitAktiv auf Twitter">
+        <img class="socialMediaIcon rightIcon" alt="Twitter Logo" src="/documents/20142/41195/Twitter-icon.png/4a54c59e-f16d-4c1a-8d48-699e40c26bd8?t=1527686243193">
+    </a>
+    </div>
+</div>
+
+## DIV to clear in order for the pictures to not get out of the portlet box
+<div class="clear"></div>

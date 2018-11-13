@@ -1,0 +1,265 @@
+## This is the PunkteTest template
+## Version 1.0 Release
+
+## A PunkteTest is used like a highly configurable peronality quiz
+## giving the user individual feedback based on the achieved points
+
+## Uses the corresponding Structure, JavaScript and jQuery
+
+##set ($jQueryInclude = "/documents/635782/0/jquery.min.js")
+#set ($d = '$')
+
+#set ($articleID = $reserved-article-id.getData() )
+#set ($instanceID =  "punktetest_${articleID}"  ) ## eigentlich sollte das die istance ID vom portlet sein, klappt aber nicht.
+
+#set ( $TopDivID = "${instanceID}_top" )
+
+#set ( $ZurueckLabel = "Einen Schritt zurück gehen" )
+
+
+<style>
+.quiz-answer {
+    cursor: pointer;
+}
+.quiz-answer:hover {
+  opacity: 0.5;
+}
+.quiz-answer-input {
+    cursor: pointer;
+}
+.quiz-step {
+    display: none;
+}
+.quiz-step.current {
+    display: none;
+}
+.hover { 
+    border: 1px solid #000; 
+}
+</style>
+
+<div id="${TopDivID}">
+
+<div class="quiz-step current" style="display:block;">
+    $Erklaerung.getData()
+    <button class="cancel-button" points="0" style="display: none;">
+	   $ZurueckLabel
+	</button>    
+</div>
+
+## Get over all the questions and put them in a quiz-step div which each represent one page
+#if (!$Frage.getSiblings().isEmpty())
+	#foreach ($cur_Frage in $Frage.getSiblings())
+	<div class="quiz-step">
+	    $cur_Frage.getData()
+
+	    <p style="text-align: center;">
+	        ## selected-points-0 will be updated with the points awarded for that question
+	        ## so it is possible to backtrack it for the cancel button
+	        <button class="cancel-button" points="0" style="text-align: center;">
+	            $ZurueckLabel
+	        </button>
+	    </p>	    
+	</div>
+	#end
+#end
+
+## The results are the last page of the quiz-steps and have their minimum points needed attached to them
+<div id="results" class="quiz-step results">
+$RueckmeldungGenerell.getData()
+#if (!$RueckmeldungFuerPunkte.getSiblings().isEmpty())
+	#foreach ($cur_RueckmeldungFuerPunkte in $RueckmeldungFuerPunkte.getSiblings())
+	    #set ($points = 'points' + $cur_RueckmeldungFuerPunkte.Mindestpunkte.getData())
+	    <div points="$cur_RueckmeldungFuerPunkte.Mindestpunkte.getData()" id="$points" class="result">
+	        $cur_RueckmeldungFuerPunkte.getData()
+	    </div>
+    #end
+#end
+</div>
+
+</div> ## end top div
+
+##<script src="$jQueryInclude"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+
+## Größe des Top-DIV per Watermark-Algorithmus bestimmen, danach 
+## Timer-Inteval aktivieren für Wechsel der Anzeige
+function adjustTopDivHeight() {
+
+  ## Top Div abholen
+  var parentDivElem = document.getElementById('${TopDivID}');
+  
+  ## Die Kinderchen, um die es geht
+  var kinderchen = parentDivElem.getElementsByClassName('quiz-step');
+  
+  ## Loop über alle DIVs, Größtes festhalten
+  var heightWatermark = 0
+  for (var i = 0; i < kinderchen.length ; i++) {
+    var thisDivElem = kinderchen[i];
+    ## Watermark finden und Ergebnis-DIV ignorieren
+    if ( $(thisDivElem).height() > heightWatermark && thisDivElem.id != 'results' ) {
+	heightWatermark = $(thisDivElem).height();
+        ##console.log("Höhe " + i + " " + $(thisDivElem).height());
+
+    }
+  }
+  ## Top-Div anpassen
+  $(parentDivElem).height(heightWatermark);  
+  
+ 
+}
+
+
+  ## Code, um Event-Handler zu installieren
+  var addEvent = function(object, type, callback) {
+    if (object == null || typeof(object) == 'undefined') return;
+    if (object.addEventListener) {
+        object.addEventListener(type, callback, false);
+    } else if (object.attachEvent) {
+        object.attachEvent("on" + type, callback);
+    } else {
+        object["on"+type] = callback;
+    }
+  };
+  
+  
+## na dann wollen wir mal
+adjustTopDivHeight();
+
+## Bei Änderung der Fenstergröße über Event-Handler nachjustieren:
+addEvent(window, "resize", function(event) { adjustTopDivHeight(); });
+
+
+var totalScore = 0;
+${d}(document).ready(function() {
+    //Initialize the starting score and sort the results based on the points needed
+    sortResults();
+    var pointsForAnswer = 0;
+
+    //Each "page" of the quiz is a quiz-step
+    ${d}('.quiz-step').each(function() {
+    var ${d}step = ${d}(this);
+    
+    //Objects with the class quiz-answer should be clickable so we can switch to the next page
+    ${d}step.find('.quiz-answer').click(function () {
+        var ${d}this = ${d}(this);
+        
+        //Every quiz-answer object also has a class like points-x where x is a number
+        //which is used to set the number of points for this answer
+        var pointsForAnswerString = ${d}(this).attr('class').match(/points[\w-]*\b/).toString();
+        pointsForAnswer = parseInt(pointsForAnswerString.replace('points-',''));
+        totalScore += pointsForAnswer;
+        ##alert(totalScore);
+        
+        ${d}step.find('.cancel-button').attr('points', pointsForAnswer);
+        
+        //After we updated our total score, now it's time to go through the responses
+        //based on their minimum points needed to achieve them
+        //The sorting in the beginning makes us go from low to high
+        ${d}('div[id^="points"]').each(function() {
+            var pointsForResponse = parseInt(${d}(this).attr('id').replace('points',''));
+            
+            //If we reached enough points for this response we make all invisible
+            //This is needed so we don't have multiple answers shown
+            if (totalScore >= pointsForResponse) {
+                ${d}('div[id^="points"]').each(function() {
+                    ${d}(this).hide();
+                });
+                
+                //Now show the current valid result which is the highest possible
+                ${d}(this).show();
+            }
+        });
+        
+        updateStep(${d}step);
+    });
+    
+    //Sometimes we don't want to just have a quiz-answer to click on
+    //but a input field for the user to put in a number
+    //Works like the other click function above except this time we get our value
+    //from the input fields and can add additional multipliers for them
+    //Because of this, there doesn't need to be a points-x class on quiz-answer-input
+    ${d}step.find('.quiz-answer-input').click(function () {
+        var ${d}this = ${d}(this);
+        var ${d}parentContainer = ${d}this.parent().parent().parent();
+        ${d}parentContainer.find('.inputDiv').each(function(){
+            var input = parseInt(${d}(this).find('.inputField').val());
+            var ${d}multiplierItem = ${d}(this).find('.multiplierItem').first();
+            var pointsForAnswerBase = parseInt(${d}multiplierItem.attr('class').match(/points[\w-]*\b/).toString().replace('points-',''));
+            pointsForAnswer = input * pointsForAnswerBase;
+            totalScore += pointsForAnswer;
+            
+            ${d}step.find('.cancel-button').attr('points', pointsForAnswer);
+        });
+        
+        ${d}('div[id^="points"]').each(function() {
+            var pointsForResponse = parseInt(${d}(this).attr('id').replace('points',''));
+            
+            if (totalScore >= pointsForResponse) {
+                ${d}('div[id^="points"]').each(function() {
+                    ${d}(this).hide();
+                });
+                
+                ${d}(this).show();
+            }
+        });
+        
+        updateStep(${d}step);
+    });
+    
+    //A cancel button will get the amount of points gained for the last question,
+    //reset it to 0 and then go back to it
+    ${d}step.find('.cancel-button').click(function () {
+        updateStepBackwards(${d}step);
+    });
+    
+});
+
+//Go to the next page and use a fading animation
+function updateStep(${d}currentStep) {
+    if (${d}currentStep.hasClass('current')) {
+        ${d}currentStep.removeClass('current');
+        ${d}currentStep.fadeOut('3000');
+        ${d}currentStep.next('.quiz-step').addClass('current');
+        ${d}currentStep.next('.quiz-step').delay('600').fadeIn('3000');
+    }
+}
+
+//Go to the previous page and use a fading animation
+function updateStepBackwards(${d}currentStep) {
+    if (${d}currentStep.hasClass('current')) {
+        ${d}currentStep.removeClass('current');
+        ${d}currentStep.fadeOut('3000');
+        var previousPoints = parseInt(${d}currentStep.prev('.quiz-step').find('.cancel-button').attr('points'));
+        totalScore = totalScore - previousPoints;
+        ##alert(totalScore);
+        ${d}currentStep.prev('.quiz-step').addClass('current');
+        ${d}currentStep.prev('.quiz-step').delay('600').fadeIn('3000');
+    }
+}
+
+//Sort the result pages from lowest to highest minimum points needed
+function sortResults() {
+var ${d}resdiv = ${d}('div.results');
+var ${d}res = ${d}resdiv.children('div');
+
+${d}res.sort(function(a,b){
+	var an = parseInt(a.getAttribute('points'));
+	var bn = parseInt(b.getAttribute('points'));
+
+	if(an > bn) {
+		return 1;
+	}
+	if(an < bn) {
+		return -1;
+	}
+	return 0;
+});
+
+${d}res.detach().appendTo(${d}resdiv);
+}
+
+});
+</script>

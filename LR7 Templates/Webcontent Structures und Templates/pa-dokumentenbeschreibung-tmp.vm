@@ -1,0 +1,82 @@
+#set ($defaultThumbnail = '/documents/20151/96729/pa-dokument-default.png/9b86253c-dc2f-d81a-1f0b-401d493ee93d?t=1533645292963')
+
+
+<style>
+
+img.paDokPrevGeneric {
+  margin:0px;
+  border:0px; 
+  width:90px;
+}
+
+div.paDokOuter {
+  overflow:hidden;
+}
+
+div.paDokPrevOuter {
+  float:left; 
+  display:inline;
+  border:1px solid #cccccc;
+  
+  margin-bottom:10px;
+  margin-right:10px;
+}
+
+a.paDokPrevLink {
+   display:block;
+   position:relative;
+}
+
+
+
+span.paDokPrevFileCorner {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 13px 0 0 13px;
+  border-color: white transparent transparent #cccccc;
+  position: absolute;
+  top: -1px;
+  left: 78px;
+}
+
+</style>
+
+##$Dokument
+
+#set ($DownloadURL = "$Dokument.getData()" )
+## Dreckiger hack: Bilder haben kein Thumbnail, die werden direkt eingebunden
+#if ( $DownloadURL.toLowerCase().contains(".jpg/") ||  $DownloadURL.toLowerCase().contains(".png/") || $DownloadURL.toLowerCase().contains(".gif/") )
+  #set ($ThumbURL = "$DownloadURL" )
+#else  
+  #set ($ThumbURL = "$DownloadURL?documentThumbnail=1" )
+#end  
+
+<div class="paDokOuter">
+
+<div class="paDokPrevOuter">
+  <a href="$Dokument.getData()" class="paDokPrevLink" download>
+  <span class="paDokPrevFileCorner"></span>
+  <img src="$ThumbURL" class="paDokPrevGeneric" data-src-error="$defaultThumbnail" alt="" /></a>
+</div>
+
+$Beschreibung.getData()
+
+
+<p><a href="$Dokument.getData()" download><i class="icon-download-alt"></i> Dokument herunterladen</a></p>
+
+</div>
+
+## Default-Bild einfügen, da wo es nicht hinhaut
+<script>
+    $(function() {
+        $('img[data-src-error]').error(function() {
+            var o = $(this);
+            var errorSrc = o.attr('data-src-error');
+
+            if (o.attr('src') != errorSrc) {
+                o.attr('src', errorSrc);
+            }
+        });
+    });
+</script>

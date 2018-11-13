@@ -1,0 +1,174 @@
+###
+### ÜberblendContent 0.10
+###
+
+#set ($articleID = $reserved-article-id.getData() )
+#set ($instanceID =  "slider${articleID}"  )
+
+## Zeit-Werte abholen.
+## Ein/Ausblende-Zeit zum Anzeige-Intervall (Timer) hinzufügen *2 (einblenden, ausblendne)
+#set ( $Integer = 0 )
+#set ( $ActualFadeTime = $Integer.parseInt($FadeTime.getData()) )
+#set ( $ActualInterval =  $Integer.parseInt($Intervall.getData()) + (2* $ActualFadeTime) )
+
+#set ( $TopDivID = "${instanceID}_top" )
+
+## JavaScript-Variablennamen durchparametrisieren, damit mehrere Contents auf einer Seite gehen
+#set ( $divIDs = "divIDs_${instanceID}" )
+#set ( $currentDivIndex = "currentDivIndex_${instanceID}" )
+#set ( $refreshIntervalID = "refreshIntervalID_${instanceID}" )
+
+<style>
+.clear {
+    clear: both;
+}
+
+.ueberblendDiv {
+    height: auto;
+}
+</style>
+
+
+
+<script language="JavaScript" type="text/javascript"><!--
+
+var ${divIDs} = new Array();
+var ${currentDivIndex} = 0;
+var ${refreshIntervalID} = null;
+
+## DIV registrieren, sodass es ein/ausgelbendet werden kann
+function registerDiv(divID) {
+
+  ## Registrieren/ID ablegen
+  ${divIDs}.push(divID);
+  var elem = document.getElementById(divID);
+
+  ## Default: Ausgeblendet
+  divZapOff(divID);
+  
+}
+
+## Größe des Top-DIV per Watermark-Algorithmus bestimmen, danach 
+## Timer-Inteval aktivieren für Wechsel der Anzeige
+function adjustTopDivHeightAndRun() {
+
+  ## Timer-Intervall stoppen, um nebenläufige Katastrophen einzudämmen
+  if ( ${refreshIntervalID} != null ) {
+    window.clearInterval(${refreshIntervalID});
+  }
+  
+  ## Loop über alle DIVs, Größtes festhalten
+  var heightWatermark = 0
+  for (var i = 0; i < ${divIDs}.length ; i++) {
+    var thisDivElem = document.getElementById(${divIDs}[i]);
+    if ( $(thisDivElem).height() > heightWatermark ) {
+	heightWatermark = $(thisDivElem).height();
+    }
+  }
+  ## Top-Div anpassen
+  var parentDivElem = document.getElementById('$TopDivID');
+  $(parentDivElem).height(heightWatermark);  
+  
+  ## Aktuelles DIV wieder einblenden
+  divZapOn(${divIDs}[${currentDivIndex}]); 
+ 
+  ## Timer-Intevall (wieder) aktivieren
+  ${refreshIntervalID} = window.setInterval(swapDivs, $ActualInterval );
+ 
+}
+
+## Ein- und Ausblenden von DIVs
+function divFadeOutFadeIn(divID,nextDivID) {
+    var elemOut = document.getElementById(divID);
+    var elemIn = document.getElementById(nextDivID);
+    $(elemOut).fadeOut( $ActualFadeTime, function(){
+	$(elemIn).fadeIn( $ActualFadeTime );
+      } );
+}
+
+## Ein DIV auszappen
+function divZapOff(divID) {
+  var thisDivElem = document.getElementById(divID);
+  $(thisDivElem).fadeOut(0);
+}
+
+## Ein DIV einzappen
+function divZapOn(divID) {
+  var thisDivElem = document.getElementById(divID);
+  $(thisDivElem).fadeIn(0);
+}
+
+
+## DIV-Anzeige umschalten (gesteuert von Timer)
+function swapDivs() {
+  var currentDiv = ${divIDs}[${currentDivIndex}];
+  var nextDivIndex = ${currentDivIndex}+1;
+  if ( nextDivIndex >= ${divIDs}.length ) {
+    nextDivIndex = 0;
+  }
+  var nextDiv =  ${divIDs}[nextDivIndex];
+  
+  divFadeOutFadeIn(currentDiv,nextDiv);
+  
+  ${currentDivIndex} = nextDivIndex;
+
+}
+
+
+// -->
+</script>
+
+<div id="$TopDivID">
+
+#if (!$Inhalt.getSiblings().isEmpty())
+
+  #set ( $counter = 1 )
+
+  #foreach ($cur_Inhalt in $Inhalt.getSiblings())
+    
+    #set ( $divID = "${instanceID}_${counter}" )
+    
+  
+    <div  id="$divID" class="ueberblendDiv">
+      $cur_Inhalt.getData()
+    </div>  
+    
+    ## Register this DIV for swapping/sliding
+    <script language="JavaScript" type="text/javascript"><!--
+      registerDiv('$divID');
+    //-->
+    </script>
+    
+    #set ( $counter = $counter+1 )
+  #end
+#end
+
+</div>
+
+<div class="clear"></div>
+
+
+## Sliden/Swappen starten
+<script language="JavaScript" type="text/javascript"><!--
+
+  ## Code, um Event-Handler zu installieren
+  var addEvent = function(object, type, callback) {
+    if (object == null || typeof(object) == 'undefined') return;
+    if (object.addEventListener) {
+        object.addEventListener(type, callback, false);
+    } else if (object.attachEvent) {
+        object.attachEvent("on" + type, callback);
+    } else {
+        object["on"+type] = callback;
+    }
+  };
+
+  ## Jetzt erst mal die Anzeige intialisieren
+  adjustTopDivHeightAndRun();
+  
+  ## Bei Änderung der Fenstergröße über Event-Handler nachjustieren:
+  addEvent(window, "resize", function(event) { adjustTopDivHeightAndRun(); });
+  
+  
+//-->
+</script>

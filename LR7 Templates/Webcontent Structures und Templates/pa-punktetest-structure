@@ -1,0 +1,130 @@
+{
+    "availableLanguageIds": [
+        "de_DE"
+    ],
+    "defaultLanguageId": "de_DE",
+    "fields": [
+        {
+            "label": {
+                "de_DE": "Erklärung / Einführender Text"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "Erklaerung",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html"
+        },
+        {
+            "label": {
+                "de_DE": "Frage"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "Frage",
+            "readOnly": false,
+            "repeatable": true,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html"
+        },
+        {
+            "label": {
+                "de_DE": "Rückmeldung generell"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "RueckmeldungGenerell",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html"
+        },
+        {
+            "label": {
+                "de_DE": "Rückmeldung abhängig von Mindestanzahl von Punkten (zeigt nur die höchste Rückmeldung an)"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "RueckmeldungFuerPunkte",
+            "readOnly": false,
+            "repeatable": true,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html",
+            "nestedFields": [
+                {
+                    "label": {
+                        "de_DE": "Anzeigen bei mindestens so vielen Punkten"
+                    },
+                    "predefinedValue": {
+                        "de_DE": ""
+                    },
+                    "style": {
+                        "de_DE": ""
+                    },
+                    "tip": {
+                        "de_DE": ""
+                    },
+                    "dataType": "integer",
+                    "fieldNamespace": "ddm",
+                    "indexType": "keyword",
+                    "localizable": true,
+                    "name": "Mindestpunkte",
+                    "readOnly": false,
+                    "repeatable": false,
+                    "required": false,
+                    "showLabel": true,
+                    "type": "ddm-integer"
+                }
+            ]
+        }
+    ]
+}

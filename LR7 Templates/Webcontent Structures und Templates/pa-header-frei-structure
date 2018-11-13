@@ -1,0 +1,32 @@
+{
+    "availableLanguageIds": [
+        "de_DE"
+    ],
+    "defaultLanguageId": "de_DE",
+    "fields": [
+        {
+            "label": {
+                "de_DE": "Inhalt - komplett frei gestaltbar (benötigt evtl. CSS Kenntnisse)"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "inhalt",
+            "readOnly": false,
+            "repeatable": false,
+            "required": true,
+            "showLabel": true,
+            "type": "ddm-text-html"
+        }
+    ]
+}

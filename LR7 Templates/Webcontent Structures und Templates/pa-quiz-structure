@@ -1,0 +1,205 @@
+{
+    "availableLanguageIds": [
+        "de_DE"
+    ],
+    "defaultLanguageId": "de_DE",
+    "fields": [
+        {
+            "label": {
+                "de_DE": "Erklärung / Einführender Text"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "Erklaerung",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html"
+        },
+        {
+            "label": {
+                "de_DE": "Frage"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "Frage",
+            "readOnly": false,
+            "repeatable": true,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html",
+            "nestedFields": [
+                {
+                    "label": {
+                        "de_DE": "Nur eine Antwort ist die Richtige"
+                    },
+                    "predefinedValue": {
+                        "de_DE": false
+                    },
+                    "style": {
+                        "de_DE": ""
+                    },
+                    "tip": {
+                        "de_DE": ""
+                    },
+                    "dataType": "boolean",
+                    "indexType": "keyword",
+                    "localizable": true,
+                    "name": "EineAntwortRichtig",
+                    "readOnly": false,
+                    "repeatable": false,
+                    "required": false,
+                    "showLabel": true,
+                    "type": "checkbox"
+                },
+                {
+                    "label": {
+                        "de_DE": "Antwort"
+                    },
+                    "predefinedValue": {
+                        "de_DE": ""
+                    },
+                    "style": {
+                        "de_DE": ""
+                    },
+                    "tip": {
+                        "de_DE": ""
+                    },
+                    "dataType": "string",
+                    "indexType": "keyword",
+                    "localizable": true,
+                    "name": "Antwort",
+                    "readOnly": false,
+                    "repeatable": true,
+                    "required": false,
+                    "showLabel": true,
+                    "type": "text",
+                    "nestedFields": [
+                        {
+                            "label": {
+                                "de_DE": "Antwort ist richtig"
+                            },
+                            "predefinedValue": {
+                                "de_DE": false
+                            },
+                            "style": {
+                                "de_DE": ""
+                            },
+                            "tip": {
+                                "de_DE": ""
+                            },
+                            "dataType": "boolean",
+                            "indexType": "keyword",
+                            "localizable": true,
+                            "name": "AntwortRichtig",
+                            "readOnly": false,
+                            "repeatable": false,
+                            "required": false,
+                            "showLabel": true,
+                            "type": "checkbox"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "label": {
+                "de_DE": "Rückmeldung generell"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "RueckmeldungGenerell",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html",
+            "nestedFields": [
+                {
+                    "label": {
+                        "de_DE": "Rückmeldung abhängig von richtigen Antworten"
+                    },
+                    "predefinedValue": {
+                        "de_DE": ""
+                    },
+                    "style": {
+                        "de_DE": ""
+                    },
+                    "tip": {
+                        "de_DE": ""
+                    },
+                    "dataType": "html",
+                    "fieldNamespace": "ddm",
+                    "indexType": "text",
+                    "localizable": true,
+                    "name": "RueckmeldungFuerPunkte",
+                    "readOnly": false,
+                    "repeatable": true,
+                    "required": false,
+                    "showLabel": true,
+                    "type": "ddm-text-html",
+                    "nestedFields": [
+                        {
+                            "label": {
+                                "de_DE": "Anzeigen bei mindestens so vielen richtigen Antworten"
+                            },
+                            "predefinedValue": {
+                                "de_DE": ""
+                            },
+                            "style": {
+                                "de_DE": ""
+                            },
+                            "tip": {
+                                "de_DE": ""
+                            },
+                            "dataType": "integer",
+                            "fieldNamespace": "ddm",
+                            "indexType": "keyword",
+                            "localizable": true,
+                            "name": "AnzahlRichtige",
+                            "readOnly": false,
+                            "repeatable": false,
+                            "required": false,
+                            "showLabel": true,
+                            "type": "ddm-integer"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

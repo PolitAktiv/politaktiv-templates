@@ -1,0 +1,80 @@
+{
+    "availableLanguageIds": [
+        "de_DE"
+    ],
+    "defaultLanguageId": "de_DE",
+    "fields": [
+        {
+            "label": {
+                "de_DE": "Beschreibung"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "html",
+            "fieldNamespace": "ddm",
+            "indexType": "text",
+            "localizable": true,
+            "name": "Beschreibung",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-text-html"
+        },
+        {
+            "label": {
+                "de_DE": "Auswahl aus Dokumentenbibliothek"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "document-library",
+            "fieldNamespace": "ddm",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "Dokument",
+            "readOnly": false,
+            "repeatable": false,
+            "required": true,
+            "showLabel": true,
+            "type": "ddm-documentlibrary"
+        },
+        {
+            "label": {
+                "de_DE": "Datumsfeld"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "date",
+            "fieldNamespace": "ddm",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "Datum",
+            "readOnly": false,
+            "repeatable": false,
+            "required": false,
+            "showLabel": true,
+            "type": "ddm-date"
+        }
+    ]
+}

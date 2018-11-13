@@ -1,0 +1,58 @@
+{
+    "availableLanguageIds": [
+        "de_DE"
+    ],
+    "defaultLanguageId": "de_DE",
+    "fields": [
+        {
+            "label": {
+                "de_DE": "Bild"
+            },
+            "predefinedValue": {
+                "de_DE": ""
+            },
+            "style": {
+                "de_DE": ""
+            },
+            "tip": {
+                "de_DE": ""
+            },
+            "dataType": "document-library",
+            "fieldNamespace": "ddm",
+            "indexType": "keyword",
+            "localizable": true,
+            "name": "bild",
+            "readOnly": false,
+            "repeatable": true,
+            "required": true,
+            "showLabel": true,
+            "type": "ddm-documentlibrary",
+            "nestedFields": [
+                {
+                    "label": {
+                        "de_DE": "Prozentualer Anteil (bsp. 50 für 50%) Summe aller Bilder sollte 100 nicht überschreiten!"
+                    },
+                    "predefinedValue": {
+                        "de_DE": "100"
+                    },
+                    "style": {
+                        "de_DE": ""
+                    },
+                    "tip": {
+                        "de_DE": ""
+                    },
+                    "dataType": "number",
+                    "fieldNamespace": "ddm",
+                    "indexType": "keyword",
+                    "localizable": true,
+                    "name": "prozent",
+                    "readOnly": false,
+                    "repeatable": false,
+                    "required": true,
+                    "showLabel": true,
+                    "type": "ddm-number"
+                }
+            ]
+        }
+    ]
+}

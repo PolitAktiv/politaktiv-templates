@@ -1,0 +1,71 @@
+##
+## Template, das eine Vorschau zu eiem YouTube-Video anzeigt. Wenn die Structure nicht alle Daten enthält,
+## werden diese vom Benutzer nachgefordert
+##
+## Version: Youtube Videolink TMP 0.9.2
+## Letzte Änderung: Portierung LR7 - EcM - 09.08.2018
+##
+
+#set ( $playButtonURL = "/documents/20151/95834/video-playbutton.png/05f9fb6b-6589-0cba-2aa5-82009ef88a01?t=1533556702812" )
+
+## Workaround: LifeRay pfuscht wenn das im AssetPublisher angezeigt
+#set ( $imgURL = $thumbnail.getData().trim() )
+#set ($imgURL = $imgURL.replace('@cdn_host@@root_path@','') )
+
+<style>
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.under {
+    left:0px;
+    top:0px;
+    z-index:1;
+}
+
+.over {
+    position:absolute;
+    left:30%;
+    top:25%;
+    z-index:2;
+    opacity:0.8;
+    width:40%;
+    height:50%;
+}
+
+.clear {
+    clear: both;
+}
+</style>
+
+
+#if ( $videoID.getData().trim().equals('') )
+    <span class="alert alert-error">Fehler: Keine Video-ID angegeben</span>
+#else
+
+    #if ( $imgURL.equals('') )
+    
+        <span class="alert alert-error">TODO: <a href="http://img.youtube.com/vi/$videoID.getData().trim()/maxresdefault.jpg" target="_blank">Vorschaubild von YouTube</a>  herunterladen und in Structure hochladen!</span>
+    #else
+        #set ($youtubeURL = "https://www.youtube.com/watch?vq=hd720&amp;v=$videoID.getData().trim()" )
+        #if ( !$playlistID.getData().trim().equals('') ) 
+            #set ($youtubeURL = "$youtubeURL&amp;list=$playlistID.getData().trim()" )
+        #end
+        
+        ## OK jetzt haben wir alles zusammen, also Videolink anzeigen
+    
+	<div style="position:relative; overflow:hidden; margin-bottom:10px; text-align:center; display:inline-block;">
+    
+	  <a href="$youtubeURL" target="_blank">
+	  <img  alt="Video bei YouTube" src="$playButtonURL" class="center over"/>
+	  <img alt="Video bei YouTube" src="$imgURL" class="center under"/>
+	  </a>
+        </div>
+        <div class="clear"></div>
+    
+    #end
+
+
+#end
