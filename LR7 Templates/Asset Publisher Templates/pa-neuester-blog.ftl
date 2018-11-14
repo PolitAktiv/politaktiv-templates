@@ -1,3 +1,14 @@
+<#--
+This template changes the basic view and functionality
+of the asset publisher.
+
+It is used to put one (the latest) entry in a big box
+with "read more".
+The intention was to show the latest blog entry in it.
+
+Latest change: Marcel Eckert, Nov 2018, Documentation
+-->
+
 <style>
 .asset-title {
     text-align: center;

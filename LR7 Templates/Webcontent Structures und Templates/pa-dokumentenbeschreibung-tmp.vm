@@ -1,3 +1,12 @@
+##This template changes the basic view and functionality
+##of the webcontent portlet.
+
+##It adds additional data to a document view.
+
+##Latest change: Marcel Eckert, Nov 2018, Documentation
+
+
+
 #set ($defaultThumbnail = '/documents/20151/96729/pa-dokument-default.png/9b86253c-dc2f-d81a-1f0b-401d493ee93d?t=1533645292963')
 
 

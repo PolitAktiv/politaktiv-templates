@@ -1,3 +1,16 @@
+<#--
+This template changes the basic view and functionality
+of the asset publisher.
+
+It shows all entries in boxes next to eachother.
+The reason for this template is to set up an
+asset publisher to sort for a specific blog category
+and then show the latest ones in those boxes.
+Of course with "read more" links.
+
+Latest change: Marcel Eckert, Nov 2018, Documentation
+-->
+
 <style>
 .asset-title {
     text-align: center;
@@ -33,7 +46,18 @@
 }
 </style>
 
+
+<#--
+All Blog boxes will be flex elements to make it easier
+to deal with smaller or changing screen/window sizes
+-->
+
 <div class="blogFlexContainer">
+
+
+<#--
+If no entries are to be found, we show a little error
+-->
 
 <#if !entries?has_content>
 	<#if !themeDisplay.isSignedIn()>
@@ -44,6 +68,11 @@
 		<@liferay_ui["message"] key="there-are-no-results" />
 	</div>
 </#if>
+
+
+<#-- 
+Now we can wrap all the little bloggies
+-->
 
 <#list entries as entry>
 <div class="blogEntry">
@@ -109,6 +138,11 @@
 	</div>
 </#list>
 </div>
+
+
+<#--
+Some macros fo additional functionality
+-->
 
 <#macro getDiscussion>
 	<#if getterUtil.getBoolean(enableComments) && assetRenderer.isCommentable()>

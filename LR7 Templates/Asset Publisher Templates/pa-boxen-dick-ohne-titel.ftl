@@ -1,3 +1,13 @@
+<#--
+This template changes the basic view and functionality
+of the asset publisher.
+
+It puts all content in 2px border boxes.
+This version will have no titles!
+
+Latest change: Marcel Eckert, Nov 2018, Documentation
+-->
+
 <style>
 .assetBoxenContainer {
 	border-style: solid;

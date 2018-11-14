@@ -1,7 +1,10 @@
-##
-## This is the template for the simple header box with pictures
-## Last update: 30.05.2018 - Marcel Eckert - initial version
-##
+##This template changes the basic view and functionality
+##of the webcontent portlet.
+
+##It creates a view for pictures in the header
+##including social media icons with links
+
+##Latest change: Marcel Eckert, Nov 2018, Documentation
 
 <style>
 .headerBox {

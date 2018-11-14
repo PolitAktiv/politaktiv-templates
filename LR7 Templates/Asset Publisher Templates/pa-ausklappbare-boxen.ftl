@@ -1,3 +1,13 @@
+<#--
+This template changes the basic view and functionality
+of the asset publisher.
+
+It adds boxes around the displayed content which
+can be opened and closed by clicking on the button
+
+Latest change: Marcel Eckert, Nov 2018, Documentation
+-->
+
 <style>
 .einklapp-ausklapp-buttons-container {
 	padding-top: 5px;
@@ -30,6 +40,10 @@
 </style>
 
 
+<#--
+Here we just get all entries and wrap them in nice boxes with buttons
+that we can manipulate with JavaScript
+-->
 
 <#if entries?has_content>
 	<#list entries as curEntry>
@@ -64,6 +78,12 @@
 	</div>
 	</#list>
 </#if>
+
+
+<#--
+This is where the magic happens...
+Just hide one and show the other. MAGIC!
+-->
 
 <script type="text/javascript">
 function ausklappen(elem)

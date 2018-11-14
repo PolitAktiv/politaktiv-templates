@@ -3,6 +3,7 @@ This template changes the basic view and functionality
 of the asset publisher.
 
 It puts all content in 1px border boxes.
+This version has no titles!
 
 Latest change: Marcel Eckert, Nov 2018, Documentation
 -->
@@ -32,7 +33,7 @@ Latest change: Marcel Eckert, Nov 2018, Documentation
 
 	<div class="assetBoxenContainer">
 		
-			<h2 class="titleContainer">${title}</h2>
+			
 		
 		<div>
 			<@liferay_ui["asset-display"]

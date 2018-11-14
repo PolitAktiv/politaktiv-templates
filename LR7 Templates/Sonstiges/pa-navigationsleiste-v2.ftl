@@ -1,3 +1,13 @@
+<#--
+This template changes the basic view and functionality
+of the navigation bar portlet.
+
+It adds another layer to the dropdown list
+and also changes the style to the default PA-Standard-4 Theme
+
+Latest change: Marcel Eckert, Nov 2018, Documentation
+-->
+
 <style>
 .navItemHighlight {
     background-color: #cce0ff !important;
@@ -184,6 +194,11 @@
 }
 </style>
 
+
+<#--
+If there are no entries, we can't show them
+-->
+
 <#if !entries?has_content>
 	<#if preview>
 		<div class="alert alert-info">
@@ -191,6 +206,7 @@
 		</div>
 	</#if>
 <#else>
+
 	<#assign
 		portletDisplay = themeDisplay.getPortletDisplay()
 
@@ -200,6 +216,13 @@
 		
 		currentPageName = themeDisplay.getLayout().getName(locale)
 	/>
+
+
+<#--
+From here on we just get all entries and their child entries up to the third layer and
+add data, links, etc to them.
+And of course we also set specific classes for selected items.
+-->
 
 	<div id="menu">
 		<ul aria-label=<@liferay.language key="site-pages" />" class="main-menu clearfix">
@@ -388,3 +411,5 @@
 		</ul>
 	</div>
 </#if>
+
+<#-- monkaS so much closing... Better not add more layers :D -->
