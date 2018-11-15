@@ -24,7 +24,11 @@
 }
 
 .ueberblendDiv {
-    height: auto;
+    height: 100%;
+}
+
+.ueberblendOuter {
+    height: 100% !important;
 }
 </style>
 
@@ -118,7 +122,7 @@ function swapDivs() {
 // -->
 </script>
 
-<div id="$TopDivID">
+<div id="$TopDivID" class="ueberblendOuter" style="height:100%;">
 
 #if (!$Inhalt.getSiblings().isEmpty())
 
